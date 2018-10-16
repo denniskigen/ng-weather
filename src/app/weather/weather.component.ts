@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Weather } from '../weather';
 import {  WeatherService } from '../weather.service';
@@ -60,7 +60,3 @@ export class WeatherComponent implements OnInit {
     this.getForecast(this.searchTerm);
   }
 }
-
-  // ngOnDestroy(); {
-  // //   this.weatherSub.unsubscribe();
-  // }
