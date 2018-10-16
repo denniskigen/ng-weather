@@ -1,0 +1,67 @@
+<div fxLayoutAlign="center spaced">
+  <div class="search-form">
+    <form>
+      <mat-form-field outline>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="text" placeholder="Enter city name"
+          [(ngModel)]="searchTerm" name="search" minlength="2" #search="ngModel">
+        <mat-error *ngIf="search.invalid">
+          Please enter a valid city name
+        </mat-error>
+      </mat-form-field>
+      <button mat-button class="search-btn" (click)="findForecast()">Search</button>
+    </form>
+  </div>
+</div>
+<div fxLayout="row">
+  <div fxFlex></div>
+  <mat-card fxFlex="600px">
+    <div *ngIf="weather">
+      <div>
+        <div fxFlex="100%" class="no-margin">
+          <mat-card-title>
+            {{ weather.city }}, {{ weather.country }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            <span>
+              {{ weather.date | date: 'EEEE' }}, {{ weather.date | date: "shortTime" }},
+            </span>
+            <span>
+              {{ weather.description | titlecase }}
+            </span>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div fxFlex="left">
+                <span class="large temp">{{ weather.temperature | roundTemperature }}&deg;C</span>
+              </div>
+              <div fxFlex class="right">
+                <span class="{{ icon }} huge"></span>
+              </div>
+            </div>
+            <mat-card-subtitle>
+              <span class="wi wi-strong-wind left"> {{ weather.wind_speed }} km/h Winds</span>
+              <span class="spaced"></span>
+              <span class="wi wi-humidity"> {{ weather.humidity }}% Humidity</span>
+            </mat-card-subtitle>
+            <p class="recommendation">{{ recommendation }}</p>
+            <mat-divider inset="true"></mat-divider>
+            <mat-list>
+              <mat-list-item *ngFor="let daily of forecasts">
+                <span fxFlex class="left">{{ daily.dt_txt | date: 'EEEE' }}</span>
+                <span fxFlex class="right">
+                  <span class="wi wi-day-{{ icons[daily.weather[0].id].icon }} icon"></span>                
+                </span>
+                <span fxFlex class="right">
+                  <span>{{ daily.main.temp_max | roundTemperature }}&deg;</span>
+                  <span class="lighter">/ {{ daily.main.temp_min | roundTemperature }}&deg;</span>
+                </span>
+              </mat-list-item>
+            </mat-list> 
+          </mat-card-content>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  <div fxFlex></div>
+</div>

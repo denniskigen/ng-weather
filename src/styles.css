@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~@mdi/font/css/materialdesignicons.min.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Fira Sans', sans-serif; }
+
+/* .content-margin {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.vertical-margin {
+  margin-top: 16px;
+  margin-bottom: 16px;
+} */
