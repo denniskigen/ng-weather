@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
+import { ApiService } from './api.service';
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherService } from './weather.service';
 import { RoundTemperaturePipe } from './round-temperature.pipe';
@@ -15,8 +16,8 @@ import { RoundTemperaturePipe } from './round-temperature.pipe';
 @NgModule({
   declarations: [
     AppComponent,
+    RoundTemperaturePipe,
     WeatherComponent,
-    RoundTemperaturePipe
   ],
   imports: [
     BrowserModule,
@@ -24,9 +25,10 @@ import { RoundTemperaturePipe } from './round-temperature.pipe';
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ],
-  providers: [ WeatherService ],
+  providers: [ ApiService, WeatherService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
