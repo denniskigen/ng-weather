@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { Weather } from '../weather';
-import {  WeatherService } from '../weather.service';
+import { ApiService } from '../api.service';
+import { WeatherService } from '../weather.service';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
 
@@ -11,52 +15,111 @@ import * as recommendations from '../recommendations.json';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-  error: any;
+  activities: any;
   city = 'Eldoret';
+  error: any;
+  forecast: any[];
+  forecastIcons = [];
   icon: string;
-  forecasts = [];
-  forecastIcon: string;
-  imageUrl: `http://openweathermap.org/img/w/`;
-  // weather data for five days in three hour intervals
-  searchTerm = '';
-  prefix = 'wi wi-owm-';
-  recommendation: string;
-  weather: Weather;
   icons = weatherIcons.default;
+  moods: any;
+  validSearch: Boolean = false;
+  prefix = 'wi wi-';
+  recommendation: string;
+  search = new FormControl();
+  serverErr: any;
+  weather: Weather;
 
-
-  constructor(private weatherService: WeatherService) { }
+  constructor(
+    private apiService: ApiService,
+    private weatherService: WeatherService) {}
 
   ngOnInit(): void {
     this.getWeather(this.city);
     this.getForecast(this.city);
+    this.searchWeather();
+    this.getActivities();
+    this.getMoods();
   }
 
   getWeather(city: string) {
     this.weatherService.getCurrentWeather(city).subscribe(
-      (data) => {
+      data => {
         this.weather = data;
-        this.icon = weatherIcons.default[data.icon_id].icon;
-        if (!(data.icon_id > 699 && data.icon_id < 800) && !(data.icon_id > 899 && data.icon_id < 1000)) {
-          this.icon = 'day-' + data.icon_id;
-        }
-        this.icon = this.prefix + this.icon;
-        this.recommendation = recommendations.default[data.icon_id].recommendation;
+        this.recommendation =
+          recommendations.default[data.icon_id].recommendation;
+        this.icon = this.prefix + weatherIcons.default[data.icon_id].icon;
+      },
+      error => {
+        this.validSearch = true;
+        this.error = error;
       }
     );
   }
 
   getForecast(city: string): void {
-    this.weatherService.getFiveDayForecast(city).subscribe((data: any) => {
-      for (let i = 0; i < data.list.length; i += 8) {
-        this.forecasts.push(data.list[i]);
-      }
+    this.weatherService.getFiveDayForecast(city).subscribe(data => this.forecast = data);
+  }
+
+  searchWeather(): void {
+    this.search
+      .valueChanges
+      .pipe(
+          debounceTime(1000),
+          distinctUntilChanged()
+        )
+        .subscribe(
+          (searchValue: string) => {
+            if (searchValue) {
+              searchValue = searchValue.trim();
+              this.getWeather(searchValue);
+              this.getForecast(searchValue);
+            }
+          },
+          err => {
+            console.log('Search Error', err);
+          }
+        );
+  }
+
+  addActivity(name: string): void {
+    if (!name) { return; }
+    console.log(name);
+    this.apiService.createActivity({ name: name })
+      .subscribe(activity => {
+        this.activities.push(activity);
+        this.getActivities();
+      });
+  }
+
+  addMood(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    console.log(name);
+    this.apiService.createMood({ name: name })
+      .subscribe(mood => {
+        this.moods.push(mood);
+        this.getMoods();
+      });
+  }
+
+  deleteActivity(id: number): void {
+    this.apiService.deleteActivity(id).subscribe();
+  }
+
+  deleteMood(id: number): void {
+    this.apiService.deleteMood(id).subscribe();
+  }
+
+  getActivities(): void {
+    this.apiService.getActivities().subscribe(activities => {
+      this.activities = activities.activities;
     });
   }
 
-  findForecast(searchTerm) {
-    this.getWeather(this.searchTerm);
-    this.forecasts = [];
-    this.getForecast(this.searchTerm);
+  getMoods(): void {
+    this.apiService.getMoods().subscribe(moods => {
+      this.moods = moods.moods;
+    });
   }
 }
