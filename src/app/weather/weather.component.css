@@ -38,15 +38,37 @@
   font-family: Montserrat, sans-serif;
 }
 
-.icon {
-  font-size: 24px;
+.fi {
+  font-size: 28px;
+}
+
+.sti {
+  font-size: 28px;
 }
 
 .search-form {
-  margin-bottom: 32px;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .search-btn {
   margin-right: 5px;
+}
+
+.search-icon {
+  font-size: 20px;
+}
+
+.wi {
+  /* color: #924da3; */
+  color: #673ab7;
+}
+
+.mood-icon {
+  color: #673ab7;
+  font-size: 18px;  
+}
+
+.delete {
+  display: flex;
+  align-items: flex-end;
 }
