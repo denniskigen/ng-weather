@@ -13,13 +13,13 @@
   },
   "211": {
     "recommendation": "A storm on the way. Mind your eardrums please."
-  }, 
+  },
   "212": {
     "recommendation": "Biblical weather today. Gumboots and a life jacket are the bare minimum"
   },
-  "221": {  
+  "221": {
     "recommendation": "Horrid weather. Jackets, brollies, heck, you might even need a boat"
-  },  
+  },
   "230": {
     "recommendation": "Storms and a bit of rain. Brolly + layers I'm afraid"
   },
@@ -28,7 +28,7 @@
   },
   "232": {
     "recommendation": "Rainfall incoming. Umbrella for goodness sake!"
-  }, 
+  },
   "300": {
     "recommendation": "Well, a bit of rain never killed anyone. Am I even legally allowed to say er... * frantically deletes*"
   },
@@ -104,6 +104,18 @@
   "622": {
     "recommendation": "It's an absolute warzone out there. Coat, umbrella, jacket and military-grade helmet required"
   },
+  "701": {
+    "recommendation": "The air is thick with fog and there's just barely a light rain. Tread carefully"
+  },
+  "702": {
+    "recommendation": "Do you smell burning? I smell burning..."
+  },
+  "721": {
+    "recommendation": "The sun's out but it's hazy. I've got work, but I'm lazy. Like a mini Eminem, right?"
+  },
+  "731": {
+    "recommendation": "Like walking out in the Sahara is what it looks like out there. Tech wear the absolute bare minimum"
+  },
   "800": {
     "recommendation": "It's a beautiful day. Lather up on some sunscreen and maybe carry a hat too for good measure."
   },
@@ -114,7 +126,7 @@
     "recommendation": "Love is in the air. Call that special someone out for a coffee"
   },
   "803": {
-    "recommendation": "'Netflix and chill' weather. It's lovely outside"
+    "recommendation": "'Netflix and chill' weather. It's pleasant outside"
   },
   "804": {
     "recommendation": "Great day for a run. Pack that gym bag"
