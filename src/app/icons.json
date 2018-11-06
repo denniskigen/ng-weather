@@ -1,52 +1,52 @@
 {
   "200": {
     "label": "thunderstorm with light rain",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "201": {
     "label": "thunderstorm with rain",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "202": {
     "label": "thunderstorm with heavy rain",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "210": {
     "label": "light thunderstorm",
-    "icon": "storm-showers"
+    "icon": "lightning"
   },
 
   "211": {
     "label": "thunderstorm",
-    "icon": "thunderstorm"
+    "icon": "lightning"
   },
 
   "212": {
     "label": "heavy thunderstorm",
-    "icon": "thunderstorm"
+    "icon": "lightning"
   },
 
   "221": {
     "label": "ragged thunderstorm",
-    "icon": "thunderstorm"
+    "icon": "lightning"
   },
 
   "230": {
     "label": "thunderstorm with light drizzle",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "231": {
     "label": "thunderstorm with drizzle",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "232": {
     "label": "thunderstorm with heavy drizzle",
-    "icon": "storm-showers"
+    "icon": "thunderstorm"
   },
 
   "300": {
@@ -61,32 +61,32 @@
 
   "302": {
     "label": "heavy intensity drizzle",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "310": {
     "label": "light intensity drizzle rain",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "311": {
     "label": "drizzle rain",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "312": {
     "label": "heavy intensity drizzle rain",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "313": {
     "label": "shower rain and drizzle",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "314": {
     "label": "heavy shower rain and drizzle",
-    "icon": "sprinkle"
+    "icon": "rain"
   },
 
   "321": {
@@ -96,7 +96,7 @@
 
   "500": {
     "label": "light rain",
-    "icon": "rain"
+    "icon": "sprinkle"
   },
 
   "501": {
@@ -141,7 +141,7 @@
 
   "531": {
     "label": "ragged shower rain",
-    "icon": "showers"
+    "icon": "storm-showers"
   },
 
   "600": {
@@ -151,7 +151,7 @@
 
   "601": {
     "label": "snow",
-    "icon": "snow"
+    "icon": "sleet"
   },
 
   "602": {
@@ -161,12 +161,12 @@
 
   "611": {
     "label": "sleet",
-    "icon": "sleet"
+    "icon": "rain-mix"
   },
 
   "612": {
     "label": "shower sleet",
-    "icon": "sleet"
+    "icon": "rain-mix"
   },
 
   "615": {
@@ -186,17 +186,17 @@
 
   "621": {
     "label": "shower snow",
-    "icon": "rain-mix"
+    "icon": "snow"
   },
 
   "622": {
     "label": "heavy shower snow",
-    "icon": "rain-mix"
+    "icon": "snow"
   },
 
   "701": {
     "label": "mist",
-    "icon": "sprinkle"
+    "icon": "showers"
   },
 
   "711": {
@@ -211,12 +211,12 @@
 
   "731": {
     "label": "sand, dust whirls",
-    "icon": "cloudy-gusts"
+    "icon": "dust"
   },
 
   "741": {
     "label": "fog",
-    "icon": "fog"
+    "icon": "day-fog"
   },
 
   "751": {
@@ -231,12 +231,12 @@
 
   "762": {
     "label": "volcanic ash",
-    "icon": "smog"
+    "icon": "dust"
   },
 
   "771": {
     "label": "squalls",
-    "icon": "day-windy"
+    "icon": "cloudy-gusts"
   },
 
   "781": {
@@ -246,29 +246,28 @@
 
   "800": {
     "label": "clear sky",
-    "icon": "sunny"
+    "icon": "day-sunny"
   },
 
   "801": {
     "label": "few clouds",
-    "icon": "cloudy"
+    "icon": "day-cloudy-gusts"
   },
 
   "802": {
     "label": "scattered clouds",
-    "icon": "cloudy"
+    "icon": "day-cloudy-gusts"
   },
 
   "803": {
     "label": "broken clouds",
-    "icon": "cloudy"
+    "icon": "day-cloudy-gusts"
   },
 
   "804": {
     "label": "overcast clouds",
-    "icon": "cloudy"
+    "icon": "day-sunny-overcast"
   },
-
 
   "900": {
     "label": "tornado",
@@ -277,7 +276,7 @@
 
   "901": {
     "label": "tropical storm",
-    "icon": "hurricane"
+    "icon": "storm-showers"
   },
 
   "902": {
@@ -337,7 +336,7 @@
 
   "957": {
     "label": "high wind, near gale",
-    "icon": "cloudy-gusts"
+    "icon": "strong-wind"
   },
 
   "958": {
