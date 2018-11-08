@@ -7,6 +7,7 @@ ngWeather is a simple weather application built in Angular that displays the day
 ### Credits
   - [Angular Material](https://material.angular.io)
   - [Angular Flex Layout](https://github.com/angular/flex-layout)
+  - [Erik Flowers' weather icons](https://github.com/erikflowers/weather-icons)
   - [OpenWeatherMap API](https://openweathermap.org/api)
 
 ### Todos

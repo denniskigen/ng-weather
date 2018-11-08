@@ -51,7 +51,7 @@
         <input matInput placeholder="Enter activity" type="text" #activity>
       </mat-form-field>
       <button (click)="addActivity(activity.value); activity.value = ''" mat-mini-fab color="primary">Save</button>
-      <mat-list>z
+      <mat-list>
         <mat-list-item *ngFor="let activity of activities">
           <p><i>{{ activity.name }}</i></p>
           <!-- <mat-icon matListIcon (click)="deleteActivity(activity)">delete</mat-icon> -->
