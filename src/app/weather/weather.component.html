@@ -1,22 +1,12 @@
 <div fxLayoutAlign="center spaced">
   <div class="search-form">
-    <!-- Search value: {{ search.value | json }} -->
     <form>
       <mat-form-field>
         <mat-icon class="search-icon" matPrefix>search</mat-icon>
         <input matInput type="search" placeholder="Enter city name" type="text" [formControl]="search">
       </mat-form-field>
+      <mat-error class="err" *ngIf="error && error.message">{{ error.message | capitalize }}. Please enter a different location</mat-error>
     </form>
-    <mat-error>
-    </mat-error>
-    <!-- <form>
-      <mat-form-field>
-        <mat-icon class="search-icon" (click)="findForecast()" matPrefix>search</mat-icon>
-        <input matInput type="text" placeholder="Enter city name"
-            [(ngModel)]="searchTerm" name="search" minlength="2" #search="ngModel">    
-      </mat-form-field>
-      <button mat-button class="search-btn" (click)="findForecast()">Search</button>
-    </form> -->
   </div>
 </div>
 <div fxLayout="row">
@@ -54,7 +44,6 @@
       <mat-list>
         <mat-list-item *ngFor="let activity of activities">
           <p><i>{{ activity.name }}</i></p>
-          <!-- <mat-icon matListIcon (click)="deleteActivity(activity)">delete</mat-icon> -->
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
@@ -94,11 +83,11 @@
               <mat-list-item *ngFor="let f of forecast; index as i">
                 <span fxFlex class="left">{{ f.dt_txt | date: 'EEEE' }}</span>
                 <span fxFlex class="right">
-                  <span class="wi wi-{{ icons[f.weather[0].id].icon }}"></span>
+                  <span class="wi wi-{{ icons[f.icon_id].icon }}"></span>
                 </span>
                 <span fxFlex class="right">
-                  <span>{{ f.main.temp_max | roundTemperature }}&deg;</span>
-                  <span class="lighter">/ {{ f.main.temp_min | roundTemperature }}&deg;</span>
+                  <span>{{ f.max | roundTemperature }}&deg;</span>
+                  <span class="lighter">/ {{ f.min | roundTemperature }}&deg;</span>
                 </span>
               </mat-list-item> 
             </mat-list>

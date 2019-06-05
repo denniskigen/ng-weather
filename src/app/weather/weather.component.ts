@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { Weather } from '../weather';
 import { ApiService } from '../api.service';
@@ -18,17 +17,17 @@ export class WeatherComponent implements OnInit {
   activities: any;
   city = 'Eldoret';
   error: any;
-  forecast: any[];
+  forecast: any[] = [];
   forecastIcons = [];
-  icon: string;
+  icon = '';
   icons = weatherIcons.default;
   moods: any;
   validSearch: Boolean = false;
   prefix = 'wi wi-';
-  recommendation: string;
+  recommendation = '';
   search = new FormControl();
   serverErr: any;
-  weather: Weather;
+  weather!: Weather;
 
   constructor(
     private apiService: ApiService,
@@ -52,7 +51,8 @@ export class WeatherComponent implements OnInit {
       },
       error => {
         this.validSearch = true;
-        this.error = error;
+        console.error('error: ', error);
+        this.error = error.error;
       }
     );
   }
@@ -72,6 +72,7 @@ export class WeatherComponent implements OnInit {
           (searchValue: string) => {
             if (searchValue) {
               searchValue = searchValue.trim();
+              this.resetError();
               this.getWeather(searchValue);
               this.getForecast(searchValue);
             }
@@ -121,5 +122,9 @@ export class WeatherComponent implements OnInit {
     this.apiService.getMoods().subscribe(moods => {
       this.moods = moods.moods;
     });
+  }
+
+  private resetError() {
+    this.error = '';
   }
 }
