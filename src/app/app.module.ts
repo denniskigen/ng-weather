@@ -12,12 +12,14 @@ import { ApiService } from './api.service';
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherService } from './weather.service';
 import { RoundTemperaturePipe } from './round-temperature.pipe';
+import { CapitalizePipe } from './capitalize.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoundTemperaturePipe,
     WeatherComponent,
+    CapitalizePipe,
   ],
   imports: [
     BrowserModule,
