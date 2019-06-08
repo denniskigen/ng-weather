@@ -22,13 +22,18 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  getMoods(): Observable<any> {
+    return this.http.get(this.moodsUrl)
+      .pipe(catchError(this.handleError));
+  }
+
   createActivity(activity: any): Observable<any> {
     return this.http.post(this.activitiesUrl, activity, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getMoods(): Observable<any> {
-    return this.http.get(this.moodsUrl)
+  createMood(mood: any): Observable<any> {
+    return this.http.post(this.moodsUrl, mood, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -43,11 +48,6 @@ export class ApiService {
     const url = `{this.moodsUrl}/${id}`;
 
     return this.http.delete(url, httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-
-  createMood(mood: any): Observable<any> {
-    return this.http.post(this.moodsUrl, mood, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

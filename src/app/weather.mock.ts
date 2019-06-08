@@ -1407,3 +1407,88 @@ export const mockFiveDayForecast = {
       'timezone': 10800
   }
 };
+
+export const searchWeatherResult = {
+  weather: {
+    city: 'Rio de Janeiro',
+    condition: 200,
+    country: 'BR',
+    date: 1559984963000,
+    description: 'few clouds',
+    humidity: 94,
+    icon: '02n',
+    icon_id: 801,
+    image: 'https://openweathermap.org/img/w/02n.png',
+    max: 20,
+    min: 16,
+    temperature: 17.58,
+    wind_speed: 13
+  },
+  forecast: [
+    {
+      date: 1560038400000,
+      description: 'broken clouds',
+      dt_txt: '2019-06-09 00:00:00',
+      humidity: 75,
+      icon: '04n',
+      icon_id: 803,
+      image: 'https://openweathermap.org/img/w/04n.png',
+      max: 20.58,
+      min: 20.58,
+      temperature: 20.58,
+      wind_speed: 1,
+    },
+    {
+      date: 1559811600000,
+      description: 'few clouds',
+      dt_txt: '2019-06-06 09:00:00',
+      humidity: 60,
+      icon: '02d',
+      icon_id: 801,
+      image: 'https://openweathermap.org/img/w/02d.png',
+      max: 22.28,
+      min: 13.44,
+      temperature: 22.28,
+      wind_speed: 8
+    },
+    {
+      date: 1559898000000,
+      description: 'scattered clouds',
+      dt_txt: '2019-06-07 09:00:00',
+      humidity: 62,
+      icon: '03d',
+      icon_id: 802,
+      image: 'https://openweathermap.org/img/w/03d.png',
+      max: 22.65,
+      min: 13.41,
+      temperature: 22.65,
+      wind_speed: 7
+    },
+    {
+      date: 1559984400000,
+      description: 'light rain',
+      dt_txt: '2019-06-08 09:00:00',
+      humidity: 68,
+      icon: '10d',
+      icon_id: 500,
+      image: 'https://openweathermap.org/img/w/10d.png',
+      max: 21.36,
+      min: 12.88,
+      temperature: 21.36,
+      wind_speed: 7
+    },
+    {
+      date: 1560070800000,
+      description: 'broken clouds',
+      dt_txt: '2019-06-09 09:00:00',
+      humidity: 66,
+      icon: '04d',
+      icon_id: 803,
+      image: 'https://openweathermap.org/img/w/04d.png',
+      max: 21.27,
+      min: 12.77,
+      temperature: 21.27,
+      wind_speed: 6
+    }
+  ]
+};

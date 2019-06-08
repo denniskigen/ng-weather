@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { Weather } from '../weather';
 import { ApiService } from '../api.service';
 import { WeatherService } from '../weather.service';
 import * as weatherIcons from '../icons.json';
@@ -17,6 +16,8 @@ export class WeatherComponent implements OnInit {
   activities: any;
   city = 'Eldoret';
   error: any;
+  activitiesErr: any;
+  moodsErr: any;
   forecast: any[] = [];
   forecastIcons = [];
   icon = '';
@@ -26,8 +27,7 @@ export class WeatherComponent implements OnInit {
   prefix = 'wi wi-';
   recommendation = '';
   search = new FormControl();
-  serverErr: any;
-  weather!: Weather;
+  weather: any;
 
   constructor(
     private apiService: ApiService,
@@ -37,11 +37,12 @@ export class WeatherComponent implements OnInit {
     this.getWeather(this.city);
     this.getForecast(this.city);
     this.searchWeather();
+    this.resetError();
     this.getActivities();
     this.getMoods();
   }
 
-  getWeather(city: string) {
+  getWeather(city: string): void {
     this.weatherService.getCurrentWeather(city).subscribe(
       data => {
         this.weather = data;
@@ -51,14 +52,22 @@ export class WeatherComponent implements OnInit {
       },
       error => {
         this.validSearch = true;
-        console.error('error: ', error);
+        console.error('error getting current weather: ', error);
         this.error = error.error;
       }
     );
   }
 
   getForecast(city: string): void {
-    this.weatherService.getFiveDayForecast(city).subscribe(data => this.forecast = data);
+    this.weatherService.getFiveDayForecast(city).subscribe(
+      data => {
+        this.forecast = data;
+      },
+      error => {
+        console.error('error getting five day forecast: ', error);
+        this.error = error.error;
+      }
+    );
   }
 
   searchWeather(): void {
@@ -78,14 +87,13 @@ export class WeatherComponent implements OnInit {
             }
           },
           err => {
-            console.log('Search Error', err);
+            console.error('Search Error: ', err);
           }
         );
   }
 
   addActivity(name: string): void {
     if (!name) { return; }
-    console.log(name);
     this.apiService.createActivity({ name: name })
       .subscribe(activity => {
         this.activities.push(activity);
@@ -96,7 +104,6 @@ export class WeatherComponent implements OnInit {
   addMood(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    console.log(name);
     this.apiService.createMood({ name: name })
       .subscribe(mood => {
         this.moods.push(mood);
@@ -115,12 +122,18 @@ export class WeatherComponent implements OnInit {
   getActivities(): void {
     this.apiService.getActivities().subscribe(activities => {
       this.activities = activities.activities;
+    }, (err) => {
+      console.error('error getting activities: ', err);
+      this.activitiesErr = err;
     });
   }
 
   getMoods(): void {
     this.apiService.getMoods().subscribe(moods => {
       this.moods = moods.moods;
+    }, (err) => {
+      console.error('error getting moods: ', err);
+      this.moodsErr = err;
     });
   }
 

@@ -3,16 +3,17 @@
     <form>
       <mat-form-field>
         <mat-icon class="search-icon" matPrefix>search</mat-icon>
-        <input matInput type="search" placeholder="Enter city name" type="text" [formControl]="search">
+        <input matInput class="search" type="search" placeholder="Enter city name" type="text" [formControl]="search">
       </mat-form-field>
-      <mat-error class="err" *ngIf="error && error.message">{{ error.message | capitalize }}. Please enter a different location</mat-error>
+      <mat-error class="err" *ngIf="error && error.message">{{ error.message | capitalize }}. Please enter a different
+        location</mat-error>
     </form>
   </div>
 </div>
 <div fxLayout="row">
   <div fxFlex></div>
   <div fxFlex="300px">
-    <mat-expansion-panel>
+    <mat-expansion-panel class="mood-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon class="mood-icon">mood</mat-icon> Moods
@@ -20,29 +21,32 @@
       </mat-expansion-panel-header>
       <p>How are you feeling today?</p>
       <mat-form-field>
-        <input matInput placeholder="Enter mood" type="text" #mood>
+        <input matInput placeholder="Enter mood" type="text" id="mood">
       </mat-form-field>
-      <button (click)="addMood(mood.value); mood.value = ''" mat-mini-fab color="primary">Save</button>
+      <mat-error class="err" id="moodErr" *ngIf="moodsErr && moodsErr.statusText">{{ moodsErr.statusText }}. Couldn't reach the
+        database.</mat-error>
+      <button id="saveMood" (click)="addMood(mood.value); mood.value = ''" mat-mini-fab color="primary">Save</button>
       <mat-list>
-        <mat-list-item *ngFor="let mood of this.moods">
+        <mat-list-item class="mood" *ngFor="let mood of this.moods">
           <p><i>{{ mood.name }}</i></p>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
-    <mat-expansion-panel>
+    <mat-expansion-panel class="activity-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-icon class="mood-icon">today</mat-icon>
-          Activities
+          <mat-icon class="mood-icon">today</mat-icon> Activities
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <p>Got any plans for today? Jot them down here.</p> 
+      <p>Got any plans for today? Jot them down here.</p>
       <mat-form-field>
-        <input matInput placeholder="Enter activity" type="text" #activity>
+        <input matInput placeholder="Enter activity" type="text" id="activity">
       </mat-form-field>
-      <button (click)="addActivity(activity.value); activity.value = ''" mat-mini-fab color="primary">Save</button>
+      <mat-error class="err" id="activityErr" *ngIf="activitiesErr && activitiesErr.statusText">{{ activitiesErr.statusText }}. Couldn't
+        reach the database.</mat-error>
+      <button id="saveActivity" (click)="addActivity(activity.value); activity.value = ''" mat-mini-fab color="primary">Save</button>
       <mat-list>
-        <mat-list-item *ngFor="let activity of activities">
+        <mat-list-item class="activity" *ngFor="let activity of activities">
           <p><i>{{ activity.name }}</i></p>
         </mat-list-item>
       </mat-list>
@@ -52,7 +56,7 @@
     <div *ngIf="weather">
       <div>
         <div fxFlex="100%" class="no-margin">
-          <mat-card-title>
+          <mat-card-title class="title">
             {{ weather.city }}, {{ weather.country }}
           </mat-card-title>
           <mat-card-subtitle>
@@ -80,7 +84,7 @@
             <p class="recommendation">{{ recommendation }}</p>
             <mat-divider inset="true"></mat-divider>
             <mat-list>
-              <mat-list-item *ngFor="let f of forecast; index as i">
+              <mat-list-item class="forecast" *ngFor="let f of forecast; index as i">
                 <span fxFlex class="left">{{ f.dt_txt | date: 'EEEE' }}</span>
                 <span fxFlex class="right">
                   <span class="wi wi-{{ icons[f.icon_id].icon }}"></span>
@@ -89,7 +93,7 @@
                   <span>{{ f.max | roundTemperature }}&deg;</span>
                   <span class="lighter">/ {{ f.min | roundTemperature }}&deg;</span>
                 </span>
-              </mat-list-item> 
+              </mat-list-item>
             </mat-list>
           </mat-card-content>
         </div>
