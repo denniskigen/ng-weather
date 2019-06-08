@@ -9,6 +9,7 @@ branches:
   - master
 
 before_install:
+- export TZ=Africa/Nairobi
 - npm install -g @angular/cli
 
 script:
