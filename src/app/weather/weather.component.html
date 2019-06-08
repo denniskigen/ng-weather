@@ -21,7 +21,7 @@
       </mat-expansion-panel-header>
       <p>How are you feeling today?</p>
       <mat-form-field>
-        <input matInput placeholder="Enter mood" type="text" id="mood">
+        <input id="moodInput" matInput placeholder="Enter mood" type="text" #mood>
       </mat-form-field>
       <mat-error class="err" id="moodErr" *ngIf="moodsErr && moodsErr.statusText">{{ moodsErr.statusText }}. Couldn't reach the
         database.</mat-error>
@@ -40,7 +40,7 @@
       </mat-expansion-panel-header>
       <p>Got any plans for today? Jot them down here.</p>
       <mat-form-field>
-        <input matInput placeholder="Enter activity" type="text" id="activity">
+        <input id="activityInput" matInput placeholder="Enter activity" type="text" #activity>
       </mat-form-field>
       <mat-error class="err" id="activityErr" *ngIf="activitiesErr && activitiesErr.statusText">{{ activitiesErr.statusText }}. Couldn't
         reach the database.</mat-error>
