@@ -16,6 +16,11 @@ script:
 - npm run test
 - npm run build-prod
 
+addons:
+  apt:
+    packages:
+    - google-chrome-stable
+
 deploy:
   provider: firebase
   token:
