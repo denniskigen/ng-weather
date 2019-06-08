@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { ApiService } from './api.service';
 
 const activitiesUrl = 'http://localhost:8080/api/activities';
+const moodsUrl = 'http://localhost:8080/api/moods';
 const mockActivities = ['Dancing', 'Kayaking', 'Pilates', 'Skiing'];
 const mockMoods = ['Happy', 'Nervous', 'Downbeat', 'Excited'];
 
@@ -158,6 +159,30 @@ describe('ApiService (with mocks): ', () => {
     // expect server to return the activity after POST
     const expectedResponse = new HttpResponse(
       { status: 201, statusText: 'Created', body: newActivity });
+    req.event(expectedResponse);
+  });
+
+  it('should create a mood and return it', () => {
+    const newMood = { id: 5, name: 'Chilling' };
+
+    service.createMood(newMood).subscribe(
+      (mood) => {
+        expect(mood).toEqual(newMood, 'should return the new mood');
+      }, (err) => {
+        console.error('test err: ', err);
+        fail('expected a mood, not an error');
+      }
+    );
+
+    // should have made one request to POST activity
+    const req = httpTestingController.expectOne(moodsUrl);
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(newMood);
+    expect(req.request.url).toEqual(moodsUrl);
+
+    // expect server to return the activity after POST
+    const expectedResponse = new HttpResponse(
+      { status: 201, statusText: 'Created', body: newMood });
     req.event(expectedResponse);
   });
 });

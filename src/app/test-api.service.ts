@@ -41,4 +41,12 @@ export class TestApiService extends ApiService {
   getMoods(): Observable<any> {
     return this.lastResult = of(this.moods);
   }
+
+  createActivity(activity: any): Observable<any> {
+    return this.lastResult = of({ id: this.activities.activities.length + 1, name: activity.name });
+  }
+
+  createMood(mood: any): Observable<any> {
+    return this.lastResult = of({ id: this.moods.moods.length + 1, name: mood.name });
+  }
 }

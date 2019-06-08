@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 import { searchWeatherResult } from '../weather.mock';
 import { WeatherComponent } from './weather.component';
@@ -234,6 +235,42 @@ describe('WeatherComponent', () => {
     expect(activityItems[1].textContent).toEqual('Kayaking');
     expect(activityItems[2].textContent).toEqual('Cycling');
     expect(activityItems[3].textContent).toEqual('Reading');
+  });
+
+  it('should add a new activity to the list of activities when the save button is clicked', () => {
+    const activityInput = nativeEl.querySelector<HTMLInputElement>('#activityInput');
+
+    // tslint:disable-next-line: no-non-null-assertion
+    activityInput!.value = 'Strength Training';
+    // tslint:disable-next-line: no-non-null-assertion
+    activityInput!.dispatchEvent(newEvent('input'));
+    fixture.detectChanges();
+    // tslint:disable-next-line: no-non-null-assertion
+    const saveBtn = debugEl.query(By.css('#saveActivity'));
+    expect(component.activities.length).toEqual(4, '4 activities');
+    click(saveBtn);
+    fixture.detectChanges();
+    expect(component.activities.length).toEqual(5, '5 activities');
+    const activityItems = nativeEl.querySelectorAll<HTMLElement>('mat-list-item.activity');
+    expect(activityItems[4].textContent).toEqual('Strength Training');
+  });
+
+  it('should add a new mood to the list of moods when the save button is clicked', () => {
+    const moodInput = nativeEl.querySelector<HTMLInputElement>('#moodInput');
+
+    // tslint:disable-next-line: no-non-null-assertion
+    moodInput!.value = 'Tired';
+    // tslint:disable-next-line: no-non-null-assertion
+    moodInput!.dispatchEvent(newEvent('input'));
+    fixture.detectChanges();
+    // tslint:disable-next-line: no-non-null-assertion
+    const saveBtn = debugEl.query(By.css('#saveMood'));
+    expect(component.moods.length).toEqual(4, '4 moods');
+    click(saveBtn);
+    fixture.detectChanges();
+    expect(component.moods.length).toEqual(5, '5 moods');
+    const moodItems = nativeEl.querySelectorAll<HTMLElement>('mat-list-item.mood');
+    expect(moodItems[4].textContent).toEqual('Tired');
   });
 });
 
