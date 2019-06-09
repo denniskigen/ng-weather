@@ -1,4 +1,4 @@
-# ngWeather
+# ngWeather   [![Build Status](https://travis-ci.org/denniskigen/ng-weather.svg?branch=master)](https://travis-ci.org/denniskigen/ng-weather)
 
 ngWeather is a simple weather application built in Angular that displays the day's weather and a five-day forecast using data from the  OpenWeatherMap API.
 
