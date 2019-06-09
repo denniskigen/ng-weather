@@ -13,9 +13,9 @@ before_install:
 - npm install -g @angular/cli
 
 script:
-- npm run lint
+- ng lint
 - npm run test-headless
-- npm run build --prod
+- ng build --prod
 
 addons:
   apt:
