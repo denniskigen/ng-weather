@@ -190,6 +190,7 @@ describe('WeatherComponent', () => {
     fixture.detectChanges();
     // tslint:disable-next-line: no-non-null-assertion
     const err = nativeEl.querySelector<HTMLElement>('.err');
+    // tslint:disable-next-line: no-non-null-assertion
     expect(err!.textContent).toContain('City not found. Please enter a different location');
   });
 
@@ -217,7 +218,9 @@ describe('WeatherComponent', () => {
     fixture.detectChanges();
     const activityErrMsg = nativeEl.querySelector<HTMLElement>('#activityErr');
     const moodErrMsg = nativeEl.querySelector<HTMLElement>('#moodErr');
+    // tslint:disable-next-line: no-non-null-assertion
     expect(activityErrMsg!.textContent).toContain('Couldn\'t reach the database.');
+    // tslint:disable-next-line: no-non-null-assertion
     expect(moodErrMsg!.textContent).toContain('Couldn\'t reach the database.');
   });
 
@@ -285,6 +288,7 @@ const ButtonClickEvents = {
   left:  { button: 0 },
   right: { button: 2 }
 };
+    // tslint:disable-next-line: no-non-null-assertion
 
 /** Simulate element click. Defaults to mouse left-button click event. */
 function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents.left): void {
