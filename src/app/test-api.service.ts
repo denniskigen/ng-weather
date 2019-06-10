@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
 @Injectable()
 /**
  * FakeApiService pretends to make real http requests.
- * implements only as much of HeroService as is actually consumed by the app
+ * implements only as much of WeatherService as is actually consumed by the app
 */
 export class TestApiService extends ApiService {
 
