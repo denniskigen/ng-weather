@@ -74,24 +74,21 @@ describe('WeatherComponent', () => {
   it('should display the current weather, five day forecast, activities and moods after ngOnInit', () =>  {
     expect(component.city).toEqual('Eldoret', 'default city');
     component.ngOnInit();
-    const cardTitle = nativeEl.querySelector('mat-card-title');
+    const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
-    const temp = nativeEl.querySelector('.large.temp');
-    const recommendation = nativeEl.querySelector('.recommendation');
+    const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
+    const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
     const activityItems = nativeEl.querySelectorAll('mat-list-item.activity');
     const moodItems = nativeEl.querySelectorAll('mat-list-item.mood');
 
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(cardTitle!.innerHTML).toMatch(/Eldoret, KE/);
+    expect(cardTitle.innerHTML).toMatch(/Eldoret, KE/);
     expect(cardSubtitles[0].innerHTML).toContain('Tuesday, 10:13 PM');
     expect(cardSubtitles[0].innerHTML).toContain('Broken Clouds');
     expect(cardSubtitles[1].innerHTML).toContain('4 km/h Winds');
     expect(cardSubtitles[1].innerHTML).toContain('88% Humidity');
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(temp!.innerHTML).toMatch(/17°C/);
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(recommendation!.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
+    expect(temp.innerHTML).toMatch(/17°C/);
+    expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(forecastItems.length).toEqual(5, 'Five day forecast');
     expect(moodItems.length).toEqual(4, 'Four mood items');
     expect(activityItems.length).toEqual(4, 'Four activity items');
@@ -138,20 +135,17 @@ describe('WeatherComponent', () => {
 
   it('should show the current weather and forecast for a valid city when it is typed into the search input', () => {
     expect(component.city).toEqual('Eldoret');
-    const searchInput = nativeEl.querySelector<HTMLInputElement>('input.search');
-    const cardTitle = nativeEl.querySelector('mat-card-title');
+    const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
+    const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
-    const temp = nativeEl.querySelector('.large.temp');
-    const recommendation = nativeEl.querySelector('.recommendation');
+    const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
+    const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
 
-    // tslint:disable-next-line: no-non-null-assertion
-    searchInput!.value = 'Rio De Janeiro';
-    // tslint:disable-next-line: no-non-null-assertion
-    searchInput!.dispatchEvent(newEvent('input'));
+    searchInput.value = 'Rio De Janeiro';
+    searchInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(searchInput!.value).toEqual('Rio De Janeiro');
+    expect(searchInput.value).toEqual('Rio De Janeiro');
     spyOn(component, 'searchWeather').and.callFake(() => {
       component.weather = searchWeatherResult.weather;
       component.forecast = searchWeatherResult.forecast;
@@ -159,45 +153,34 @@ describe('WeatherComponent', () => {
     // search weather
     component.searchWeather();
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(cardTitle!.innerHTML).toMatch(/Rio de Janeiro, BR/);
+    expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);
     expect(cardSubtitles[0].innerHTML).toContain('Saturday, 12:09 PM');
     expect(cardSubtitles[0].innerHTML).toContain('Few Clouds');
     expect(cardSubtitles[1].innerHTML).toContain('13 km/h Winds');
     expect(cardSubtitles[1].innerHTML).toContain('94% Humidity');
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(temp!.innerHTML).toMatch(/18°C/);
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(recommendation!.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
+    expect(temp.innerHTML).toMatch(/18°C/);
+    expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(forecastItems.length).toEqual(5, 'Five day forecast');
   });
 
   it('should throw an error when the city being searched for is invalid', () => {
-    const searchInput = nativeEl.querySelector<HTMLInputElement>('input.search');
+    const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
 
-    // tslint:disable-next-line: no-non-null-assertion
-    searchInput!.value = 'Ryo De Janero';
-    // tslint:disable-next-line: no-non-null-assertion
-    searchInput!.dispatchEvent(newEvent('input'));
+    searchInput.value = 'Ryo De Janero';
+    searchInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(searchInput!.value).toEqual('Ryo De Janero');
+    expect(searchInput.value).toEqual('Ryo De Janero');
     spyOn(component, 'searchWeather').and.callFake(() => {
       component.error = mock404ErrorResponse.error;
     });
     // search weather
     component.searchWeather();
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
-    const err = nativeEl.querySelector<HTMLElement>('.err');
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(err!.textContent).toContain('City not found. Please enter a different location');
+    const err = <HTMLElement>nativeEl.querySelector('.err');
+    expect(err.textContent).toContain('City not found. Please enter a different location');
   });
 
   it('should throw an error when moods or activities cannot be retrieved from the database', () => {
-    const moodErr = nativeEl.querySelector<HTMLElement>('#moodErr');
-    const activityErr = nativeEl.querySelector<HTMLElement>('#activityErr');
-
     spyOn(component, 'getActivities').and.callFake(() => {
       component.activitiesErr = new HttpErrorResponse({
         status: 0,
@@ -216,12 +199,10 @@ describe('WeatherComponent', () => {
     component.getMoods();
     component.getActivities();
     fixture.detectChanges();
-    const activityErrMsg = nativeEl.querySelector<HTMLElement>('#activityErr');
-    const moodErrMsg = nativeEl.querySelector<HTMLElement>('#moodErr');
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(activityErrMsg!.textContent).toContain('Couldn\'t reach the database.');
-    // tslint:disable-next-line: no-non-null-assertion
-    expect(moodErrMsg!.textContent).toContain('Couldn\'t reach the database.');
+    const activityErrMsg = <HTMLElement>nativeEl.querySelector('#activityErr');
+    const moodErrMsg = <HTMLElement>nativeEl.querySelector('#moodErr');
+    expect(activityErrMsg.textContent).toContain('Couldn\'t reach the database.');
+    expect(moodErrMsg.textContent).toContain('Couldn\'t reach the database.');
   });
 
   it('should show a list of moods when the moods panel is expanded', () => {
@@ -241,38 +222,32 @@ describe('WeatherComponent', () => {
   });
 
   it('should add a new activity to the list of activities when the save button is clicked', () => {
-    const activityInput = nativeEl.querySelector<HTMLInputElement>('#activityInput');
+    const activityInput = <HTMLInputElement>nativeEl.querySelector('#activityInput');
 
-    // tslint:disable-next-line: no-non-null-assertion
-    activityInput!.value = 'Strength Training';
-    // tslint:disable-next-line: no-non-null-assertion
-    activityInput!.dispatchEvent(newEvent('input'));
+    activityInput.value = 'Strength Training';
+    activityInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
     const saveBtn = debugEl.query(By.css('#saveActivity'));
     expect(component.activities.length).toEqual(4, '4 activities');
     click(saveBtn);
     fixture.detectChanges();
     expect(component.activities.length).toEqual(5, '5 activities');
-    const activityItems = nativeEl.querySelectorAll<HTMLElement>('mat-list-item.activity');
+    const activityItems = nativeEl.querySelectorAll('mat-list-item.activity');
     expect(activityItems[4].textContent).toEqual('Strength Training');
   });
 
   it('should add a new mood to the list of moods when the save button is clicked', () => {
-    const moodInput = nativeEl.querySelector<HTMLInputElement>('#moodInput');
+    const moodInput = <HTMLInputElement>nativeEl.querySelector('#moodInput');
 
-    // tslint:disable-next-line: no-non-null-assertion
-    moodInput!.value = 'Tired';
-    // tslint:disable-next-line: no-non-null-assertion
-    moodInput!.dispatchEvent(newEvent('input'));
+    moodInput.value = 'Tired';
+    moodInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
-    // tslint:disable-next-line: no-non-null-assertion
     const saveBtn = debugEl.query(By.css('#saveMood'));
     expect(component.moods.length).toEqual(4, '4 moods');
     click(saveBtn);
     fixture.detectChanges();
     expect(component.moods.length).toEqual(5, '5 moods');
-    const moodItems = nativeEl.querySelectorAll<HTMLElement>('mat-list-item.mood');
+    const moodItems = nativeEl.querySelectorAll('mat-list-item.mood');
     expect(moodItems[4].textContent).toEqual('Tired');
   });
 });
@@ -288,7 +263,6 @@ const ButtonClickEvents = {
   left:  { button: 0 },
   right: { button: 2 }
 };
-    // tslint:disable-next-line: no-non-null-assertion
 
 /** Simulate element click. Defaults to mouse left-button click event. */
 function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents.left): void {
