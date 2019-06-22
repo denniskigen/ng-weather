@@ -15,8 +15,11 @@ before_install:
 
 script:
 - ng lint
-- npm run test-headless
+- ng test --watch=false  --code-coverage=true --browsers=ChromeHeadless
 - ng build --prod
+
+after_script:
+- bash <(curl -s https://codecov.io/bash)
 
 addons:
   apt:
