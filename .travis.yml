@@ -27,3 +27,6 @@ deploy:
   provider: firebase
   skip-cleanup: true,
   token: $SECURE_TOKEN
+
+codecov:
+  token: $CODECOV_TOKEN
