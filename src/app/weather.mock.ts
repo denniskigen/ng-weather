@@ -1,4 +1,4 @@
-import { CurrentWeatherData, Weather } from './weather';
+import { CurrentWeatherData } from './weather';
 
 export const mockCurrentWeather: CurrentWeatherData = {
   'weather': [
