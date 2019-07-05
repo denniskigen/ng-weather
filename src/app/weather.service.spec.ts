@@ -196,7 +196,7 @@ describe('WeatherService ', () => {
 
   it('should throw an error when the API cannot be reached for forecast data', (done: DoneFn) => {
     const city = '@@@@@@';
-    httpClientSpy.get.and.callFake((() => throwError(mockErrorResponse)));
+    httpClientSpy.get.and.callFake(() => throwError(mockErrorResponse));
 
     service.getFiveDayForecast(city).subscribe(
       (data) => fail('expected an error, not forecast data'),

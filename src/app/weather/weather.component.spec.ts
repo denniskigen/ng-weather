@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -53,9 +53,9 @@ describe('WeatherComponent', () => {
           useClass: TestWeatherService
         }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -64,16 +64,24 @@ describe('WeatherComponent', () => {
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     nativeEl = debugEl.nativeElement;
-    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the current weather, five day forecast, activities and moods after ngOnInit', () =>  {
+  it('should not have weather data immediately after the component is constructed', () => {
+    expect(component.weather).not.toBeDefined();
+    expect(component.forecast.length).not.toBeGreaterThan(0, 'No forecasts');
+  });
+
+  it('should display the current weather, five day forecast, activities and moods after the component initializes', () => {
     expect(component.city).toEqual('Eldoret', 'default city');
-    component.ngOnInit();
+    fixture.detectChanges();
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
     const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
@@ -135,6 +143,7 @@ describe('WeatherComponent', () => {
 
   it('should show the current weather and forecast for a valid city when it is typed into the search input', () => {
     expect(component.city).toEqual('Eldoret');
+    fixture.detectChanges();
     const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
@@ -164,6 +173,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should throw an error when the city being searched for is invalid', () => {
+    fixture.detectChanges();
     const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
 
     searchInput.value = 'Ryo De Janero';
@@ -181,6 +191,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should throw an error when moods or activities cannot be retrieved from the database', () => {
+    fixture.detectChanges();
     spyOn(component, 'getActivities').and.callFake(() => {
       component.activitiesErr = new HttpErrorResponse({
         status: 0,
@@ -206,6 +217,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should show a list of moods when the moods panel is expanded', () => {
+    fixture.detectChanges();
     const moodItems = nativeEl.querySelectorAll('.mood');
     expect(moodItems[0].textContent).toEqual('Happy');
     expect(moodItems[1].textContent).toEqual('Melancholy');
@@ -214,6 +226,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should show a list of activities when the activities panel is expanded', () => {
+    fixture.detectChanges();
     const activityItems = nativeEl.querySelectorAll('.activity');
     expect(activityItems[0].textContent).toEqual('Dancing');
     expect(activityItems[1].textContent).toEqual('Kayaking');
@@ -260,7 +273,7 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
 
 /** Button events to pass to `DebugElement.triggerEventHandler` for RouterLink event handler */
 const ButtonClickEvents = {
-  left:  { button: 0 },
+  left: { button: 0 },
   right: { button: 2 }
 };
 
