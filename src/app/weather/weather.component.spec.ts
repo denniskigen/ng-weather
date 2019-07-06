@@ -5,12 +5,17 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { searchWeatherResult } from '../weather.mock';
+import { of } from 'rxjs';
+
 import { WeatherComponent } from './weather.component';
 import { ApiService } from '../api.service';
-import { TestApiService } from '../test-api.service';
-import { TestWeatherService } from './test-weather.service';
 import { WeatherService } from '../weather.service';
+import {
+  searchWeatherResult, testCurrentWeather, testFiveDayForecast,
+  testActivities, testMoods
+} from '../weather.mock';
+import * as weatherIcons from '../icons.json';
+import * as recommendations from '../recommendations.json';
 
 import { CapitalizePipe } from '../capitalize.pipe';
 import { RoundTemperaturePipe } from '../round-temperature.pipe';
@@ -23,6 +28,24 @@ const mock404ErrorResponse = new HttpErrorResponse({
   status: 404,
   statusText: 'Not Found'
 });
+
+const weatherServiceStub = {
+  getCurrentWeather: () => of(testCurrentWeather),
+  getFiveDayForecast: () => of(testFiveDayForecast)
+};
+
+const apiServiceStub = {
+  getActivities: () => of(testActivities),
+  getMoods: () => of(testMoods),
+  createActivity: (activity: any) => of({
+    id: testActivities.activities.length + 1,
+    name: activity.name
+  }),
+  createMood: (mood: any) => of({
+    id: testMoods.moods.length + 1,
+    name: mood.name
+  })
+};
 
 describe('WeatherComponent', () => {
   let component: WeatherComponent;
@@ -46,11 +69,11 @@ describe('WeatherComponent', () => {
       providers: [
         {
           provide: ApiService,
-          useClass: TestApiService
+          useValue: apiServiceStub
         },
         {
           provide: WeatherService,
-          useClass: TestWeatherService
+          useValue: weatherServiceStub
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -79,7 +102,7 @@ describe('WeatherComponent', () => {
     expect(component.forecast.length).not.toBeGreaterThan(0, 'No forecasts');
   });
 
-  it('should display the current weather, five day forecast, activities and moods after the component initializes', () => {
+  it('should display the current weather, five day forecast, recommendation, activities and moods after the component initializes', () => {
     expect(component.city).toEqual('Eldoret', 'default city');
     fixture.detectChanges();
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
@@ -89,6 +112,7 @@ describe('WeatherComponent', () => {
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
     const activityItems = nativeEl.querySelectorAll('mat-list-item.activity');
     const moodItems = nativeEl.querySelectorAll('mat-list-item.mood');
+    const weatherIcon = <HTMLElement>nativeEl.querySelector('.huge.my-wi');
 
     expect(cardTitle.innerHTML).toMatch(/Eldoret, KE/);
     expect(cardSubtitles[0].innerHTML).toContain('Tuesday, 10:13 PM');
@@ -96,10 +120,14 @@ describe('WeatherComponent', () => {
     expect(cardSubtitles[1].innerHTML).toContain('4 km/h Winds');
     expect(cardSubtitles[1].innerHTML).toContain('88% Humidity');
     expect(temp.innerHTML).toMatch(/17°C/);
+    expect(recommendation.innerHTML).toMatch(
+      recommendations.default[component.weather.icon_id].recommendation
+    );
     expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(forecastItems.length).toEqual(5, 'Five day forecast');
     expect(moodItems.length).toEqual(4, 'Four mood items');
     expect(activityItems.length).toEqual(4, 'Four activity items');
+    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons.default[component.weather.icon_id].icon);
   });
 
   it('should show the current weather for the default city as well as a recommendation based on the weather', () => {
