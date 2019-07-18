@@ -28,7 +28,7 @@ addons:
 
 deploy:
   provider: firebase
-  skip-cleanup: true,
+  skip-cleanup: true
   token: $SECURE_TOKEN
 
 codecov:
