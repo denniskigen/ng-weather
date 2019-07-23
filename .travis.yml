@@ -11,11 +11,11 @@ branches:
 before_install:
 - export TZ=Africa/Nairobi
 - npm install -g @angular/cli
-- npm install -g firebase-tools
+- npm install netlify-cli -g
 
 script:
 - ng lint
-- ng test --watch=false  --code-coverage=true --browsers=ChromeHeadless
+- ng test --watch=false --code-coverage=true --browsers=ChromeHeadless
 - ng build --prod
 
 after_script:
@@ -27,9 +27,11 @@ addons:
     - google-chrome-stable
 
 deploy:
-  provider: firebase
+  provider: script
+  script: netlify deploy -s $NETLIFY_SITE_ID -a $NETLIFY_AUTH_TOKEN -p -d ./dist/ng-weather
   skip-cleanup: true
-  token: $SECURE_TOKEN
+  on:
+    branch: master
 
 codecov:
   token: $CODECOV_TOKEN
