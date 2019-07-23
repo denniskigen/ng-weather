@@ -11,7 +11,7 @@ branches:
 before_install:
 - export TZ=Africa/Nairobi
 - npm install -g @angular/cli
-- npm install netlify-cli -g
+- npm install -g netlify-cli
 
 script:
 - ng lint
