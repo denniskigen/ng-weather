@@ -38,11 +38,11 @@ const apiServiceStub = {
   getActivities: () => of(testActivities),
   getMoods: () => of(testMoods),
   createActivity: (activity: any) => of({
-    id: testActivities.activities.length + 1,
+    id: testActivities.length + 1,
     name: activity.name
   }),
   createMood: (mood: any) => of({
-    id: testMoods.moods.length + 1,
+    id: testMoods.length + 1,
     name: mood.name
   })
 };
@@ -110,8 +110,8 @@ describe('WeatherComponent', () => {
     const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
     const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
-    const activityItems = nativeEl.querySelectorAll('mat-list-item.activity');
-    const moodItems = nativeEl.querySelectorAll('mat-list-item.mood');
+    const activityItems = nativeEl.querySelectorAll('.activity');
+    const moodItems = nativeEl.querySelectorAll('.mood');
     const weatherIcon = <HTMLElement>nativeEl.querySelector('.huge.my-wi');
 
     expect(cardTitle.innerHTML).toMatch(/Eldoret, KE/);
@@ -246,20 +246,20 @@ describe('WeatherComponent', () => {
 
   it('should show a list of moods when the moods panel is expanded', () => {
     fixture.detectChanges();
-    const moodItems = nativeEl.querySelectorAll('.mood');
-    expect(moodItems[0].textContent).toEqual('Happy');
-    expect(moodItems[1].textContent).toEqual('Melancholy');
-    expect(moodItems[2].textContent).toEqual('Downbeat');
-    expect(moodItems[3].textContent).toEqual('Cheerful');
+    const moods = nativeEl.querySelectorAll('.mood');
+    expect(moods[0].textContent).toEqual('Happy');
+    expect(moods[1].textContent).toEqual('Melancholy');
+    expect(moods[2].textContent).toEqual('Downbeat');
+    expect(moods[3].textContent).toEqual('Cheerful');
   });
 
   it('should show a list of activities when the activities panel is expanded', () => {
     fixture.detectChanges();
-    const activityItems = nativeEl.querySelectorAll('.activity');
-    expect(activityItems[0].textContent).toEqual('Dancing');
-    expect(activityItems[1].textContent).toEqual('Kayaking');
-    expect(activityItems[2].textContent).toEqual('Cycling');
-    expect(activityItems[3].textContent).toEqual('Reading');
+    const activities = nativeEl.querySelectorAll('.activity');
+    expect(activities[0].textContent).toEqual('Dancing');
+    expect(activities[1].textContent).toEqual('Kayaking');
+    expect(activities[2].textContent).toEqual('Cycling');
+    expect(activities[3].textContent).toEqual('Reading');
   });
 
   it('should add a new activity to the list of activities when the save button is clicked', () => {
@@ -273,7 +273,7 @@ describe('WeatherComponent', () => {
     click(saveBtn);
     fixture.detectChanges();
     expect(component.activities.length).toEqual(5, '5 activities');
-    const activityItems = nativeEl.querySelectorAll('mat-list-item.activity');
+    const activityItems = nativeEl.querySelectorAll('.activity');
     expect(activityItems[4].textContent).toEqual('Strength Training');
   });
 
@@ -288,7 +288,7 @@ describe('WeatherComponent', () => {
     click(saveBtn);
     fixture.detectChanges();
     expect(component.moods.length).toEqual(5, '5 moods');
-    const moodItems = nativeEl.querySelectorAll('mat-list-item.mood');
+    const moodItems = nativeEl.querySelectorAll('.mood');
     expect(moodItems[4].textContent).toEqual('Tired');
   });
 });

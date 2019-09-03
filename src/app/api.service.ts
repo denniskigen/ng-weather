@@ -45,7 +45,7 @@ export class ApiService {
   }
 
   deleteMood(id: number): Observable<{}> {
-    const url = `{this.moodsUrl}/${id}`;
+    const url = `${this.moodsUrl}/${id}`;
 
     return this.http.delete(url, httpOptions)
       .pipe(catchError(this.handleError));

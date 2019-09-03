@@ -27,8 +27,10 @@
         database.</mat-error>
       <button id="saveMood" (click)="addMood(mood.value); mood.value = ''" mat-mini-fab color="primary">Save</button>
       <mat-list>
-        <mat-list-item class="mood" *ngFor="let mood of this.moods">
-          <p><i>{{ mood.name }}</i></p>
+        <mat-list-item class="moodItems" *ngFor="let mood of this.moods">
+          <p class="mood mat-body-1 text-grey-dark">{{ mood.name }}</p>
+          <mat-icon class="delete" title="delete mood" (click)="deleteMood(mood._id)">delete</mat-icon>
+          <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
@@ -38,7 +40,7 @@
           <mat-icon class="mood-icon">today</mat-icon> Activities
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <p>Got any plans for today? Jot them down here.</p>
+      <p>Got any plans for today? Jot them down here.</p>      
       <mat-form-field>
         <input id="activityInput" matInput placeholder="Enter activity" type="text" #activity>
       </mat-form-field>
@@ -46,8 +48,10 @@
         reach the database.</mat-error>
       <button id="saveActivity" (click)="addActivity(activity.value); activity.value = ''" mat-mini-fab color="primary">Save</button>
       <mat-list>
-        <mat-list-item class="activity" *ngFor="let activity of activities">
-          <p><i>{{ activity.name }}</i></p>
+        <mat-list-item class="activityItems" *ngFor="let activity of activities">
+          <p class="activity mat-body-1 text-grey-dark">{{ activity.name }}</p>
+          <mat-icon class="delete" title="delete activity" (click)="deleteActivity(activity._id)">delete</mat-icon>
+          <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>

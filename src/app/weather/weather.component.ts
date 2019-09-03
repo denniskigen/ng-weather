@@ -112,16 +112,22 @@ export class WeatherComponent implements OnInit {
   }
 
   deleteActivity(id: number): void {
-    this.apiService.deleteActivity(id).subscribe();
+    this.activities = this.activities.filter((activity: any) => activity.id !== id);
+    this.apiService.deleteActivity(id).subscribe(res => {
+      this.getActivities();
+    });
   }
 
   deleteMood(id: number): void {
-    this.apiService.deleteMood(id).subscribe();
+    this.moods = this.moods.filter((mood: any) => mood.id !== id);
+    this.apiService.deleteMood(id).subscribe(res => {
+      this.getMoods();
+    });
   }
 
   getActivities(): void {
     this.apiService.getActivities().subscribe(activities => {
-      this.activities = activities.activities;
+      this.activities = activities;
     }, (err) => {
       console.error('error getting activities: ', err);
       this.activitiesErr = err;
@@ -130,7 +136,7 @@ export class WeatherComponent implements OnInit {
 
   getMoods(): void {
     this.apiService.getMoods().subscribe(moods => {
-      this.moods = moods.moods;
+      this.moods = moods;
     }, (err) => {
       console.error('error getting moods: ', err);
       this.moodsErr = err;

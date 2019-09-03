@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "concurrently \"ng serve\" \"cd server && nodemon ./app.js\"",
     "build": "ng build",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
@@ -24,9 +24,11 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "@mdi/font": "^2.8.94",
+    "concurrently": "^4.1.2",
     "core-js": "^2.5.4",
-    "hapi": "^17.6.0",
+    "express": "^4.17.1",
     "lodash": "^4.17.14",
+    "nodemon": "^1.19.1",
     "rxjs": "6.2.0",
     "rxjs-compat": "6.3.3",
     "zone.js": "~0.8.26"
