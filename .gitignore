@@ -40,5 +40,5 @@ Thumbs.db
 node_modules
 
 # API keys and secrets
-*/env.config.js
+.env
 */env.config.ts
