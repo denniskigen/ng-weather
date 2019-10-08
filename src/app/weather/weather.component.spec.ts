@@ -53,6 +53,7 @@ describe('WeatherComponent', () => {
   let service: WeatherService;
   let debugEl: DebugElement;
   let nativeEl: HTMLElement;
+  const defaultCity = 'Eldoret';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -103,6 +104,19 @@ describe('WeatherComponent', () => {
   });
 
   it('should display the current weather, five day forecast, recommendation, activities and moods after the component initializes', () => {
+    const getWeatherSpy = spyOn(component, 'getWeather').and.callThrough();
+    const getForecastSpy = spyOn(component, 'getForecast').and.callThrough();
+    const getActivitiesSpy = spyOn(component, 'getActivities').and.callThrough();
+    const getMoodsSpy = spyOn(component, 'getMoods').and.callThrough();
+
+    expect(component.city).toEqual(defaultCity, 'default city');
+    fixture.detectChanges();
+    expect(getWeatherSpy).toHaveBeenCalledTimes(1);
+    expect(getWeatherSpy).toHaveBeenCalledWith(defaultCity);
+    expect(getForecastSpy).toHaveBeenCalledTimes(1);
+    expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
+    expect(getActivitiesSpy).toHaveBeenCalledTimes(1);
+    expect(getMoodsSpy).toHaveBeenCalledTimes(1);
     expect(component.city).toEqual('Eldoret', 'default city');
     fixture.detectChanges();
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
@@ -131,10 +145,14 @@ describe('WeatherComponent', () => {
   });
 
   it('should show the current weather for the default city as well as a recommendation based on the weather', () => {
+    const getWeatherSpy = spyOn(component, 'getWeather').and.callThrough();
+
     expect(component.city).toEqual('Eldoret', 'default city');
     component.getWeather(component.city);
+    expect(getWeatherSpy).toHaveBeenCalledTimes(1);
+    expect(getWeatherSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.weather).toBeDefined();
-    expect(component.weather.city).toEqual('Eldoret');
+    expect(component.weather.city).toEqual(defaultCity);
     expect(component.weather.condition).toEqual(200);
     expect(component.weather.country).toEqual('KE');
     expect(component.weather.description).toEqual('broken clouds');
@@ -148,8 +166,12 @@ describe('WeatherComponent', () => {
   });
 
   it('should show the five day forecast for the default city', () => {
-    expect(component.city).toEqual('Eldoret', 'default city');
+    const getForecastSpy = spyOn(component, 'getForecast').and.callThrough();
+
+    expect(component.city).toEqual(defaultCity, 'default city');
     component.getForecast(component.city);
+    expect(getForecastSpy).toHaveBeenCalledTimes(1);
+    expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.forecast).toBeDefined();
     expect(component.forecast.length).toEqual(5);
     expect(component.forecast[0].description).toEqual('few clouds');
@@ -170,7 +192,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should show the current weather and forecast for a valid city when it is typed into the search input', () => {
-    expect(component.city).toEqual('Eldoret');
+    expect(component.city).toEqual(defaultCity);
     fixture.detectChanges();
     const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
@@ -215,7 +237,44 @@ describe('WeatherComponent', () => {
     component.searchWeather();
     fixture.detectChanges();
     const err = <HTMLElement>nativeEl.querySelector('.err');
-    expect(err.textContent).toContain('City not found. Please enter a different location');
+    expect(err.textContent).toContain('City not found');
+  });
+
+  it('should throw an error when the current weather and forecast cannot be retrieved', () => {
+    fixture.detectChanges();
+    spyOn(component, 'getWeather').and.callFake(() => {
+      component.error = new HttpErrorResponse({
+        status: 500,
+        statusText: 'Server Error',
+        error: {
+          status: 500,
+          message: 'Could not fetch weather data from server'
+        }
+      });
+    });
+
+    spyOn(component, 'getForecast').and.callFake(() => {
+      component.error = new HttpErrorResponse({
+        statusText: 'Server Error',
+        error: {
+          status: 500,
+          message: 'Could not fetch forecast data from server'
+        }
+      });
+    });
+
+    component.getWeather(defaultCity);
+    fixture.detectChanges();
+    expect(component.error).toBeDefined();
+    expect(component.error.error.message).toEqual('Could not fetch weather data from server');
+    const weatherErrMsg = <HTMLElement>nativeEl.querySelector('mat-error.err');
+    expect(weatherErrMsg.textContent).toMatch(/Http failure response/);
+    component.getForecast(defaultCity);
+    fixture.detectChanges();
+    expect(component.error).toBeDefined();
+    expect(component.error.error.message).toEqual('Could not fetch forecast data from server');
+    const forecastErrMsg = <HTMLElement>nativeEl.querySelector('mat-error.err');
+    expect(forecastErrMsg.textContent).toMatch(/Http failure response/);
   });
 
   it('should throw an error when moods or activities cannot be retrieved from the database', () => {
@@ -234,7 +293,7 @@ describe('WeatherComponent', () => {
       });
     });
 
-    // get moods
+    // get moods and activities
     component.getMoods();
     component.getActivities();
     fixture.detectChanges();
@@ -263,6 +322,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should add a new activity to the list of activities when the save button is clicked', () => {
+    const addActivitySpy = spyOn(component, 'addActivity').and.callThrough();
     const activityInput = <HTMLInputElement>nativeEl.querySelector('#activityInput');
 
     activityInput.value = 'Strength Training';
@@ -275,9 +335,12 @@ describe('WeatherComponent', () => {
     expect(component.activities.length).toEqual(5, '5 activities');
     const activityItems = nativeEl.querySelectorAll('.activity');
     expect(activityItems[4].textContent).toEqual('Strength Training');
+    expect(addActivitySpy).toHaveBeenCalledTimes(1);
+    expect(addActivitySpy).toHaveBeenCalledWith('Strength Training');
   });
 
   it('should add a new mood to the list of moods when the save button is clicked', () => {
+    const addMoodSpy = spyOn(component, 'addMood').and.callThrough();
     const moodInput = <HTMLInputElement>nativeEl.querySelector('#moodInput');
 
     moodInput.value = 'Tired';
@@ -290,6 +353,8 @@ describe('WeatherComponent', () => {
     expect(component.moods.length).toEqual(5, '5 moods');
     const moodItems = nativeEl.querySelectorAll('.mood');
     expect(moodItems[4].textContent).toEqual('Tired');
+    expect(addMoodSpy).toHaveBeenCalledTimes(1);
+    expect(addMoodSpy).toHaveBeenCalledWith('Tired');
   });
 });
 
