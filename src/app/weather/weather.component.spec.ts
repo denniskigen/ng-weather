@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,6 +55,7 @@ describe('WeatherComponent', () => {
   let debugEl: DebugElement;
   let nativeEl: HTMLElement;
   const defaultCity = 'Eldoret';
+  const locale = 'en-US';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -117,7 +119,7 @@ describe('WeatherComponent', () => {
     expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
     expect(getActivitiesSpy).toHaveBeenCalledTimes(1);
     expect(getMoodsSpy).toHaveBeenCalledTimes(1);
-    expect(component.city).toEqual('Eldoret', 'default city');
+    expect(component.city).toEqual(defaultCity, 'default city');
     fixture.detectChanges();
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
@@ -128,20 +130,21 @@ describe('WeatherComponent', () => {
     const moodItems = nativeEl.querySelectorAll('.mood');
     const weatherIcon = <HTMLElement>nativeEl.querySelector('.huge.my-wi');
 
-    expect(cardTitle.innerHTML).toMatch(/Eldoret, KE/);
-    expect(cardSubtitles[0].innerHTML).toContain('Tuesday, 10:13 PM');
-    expect(cardSubtitles[0].innerHTML).toContain('Broken Clouds');
-    expect(cardSubtitles[1].innerHTML).toContain('4 km/h Winds');
-    expect(cardSubtitles[1].innerHTML).toContain('88% Humidity');
-    expect(temp.innerHTML).toMatch(/17°C/);
+    expect(cardTitle.innerHTML).toContain(testCurrentWeather.city + ', ' + testCurrentWeather.country);
+    expect(cardSubtitles[0].innerHTML).toContain(formatDate(testCurrentWeather.date, 'EEEE', locale));
+    expect(cardSubtitles[0].innerHTML).toContain(formatDate(testCurrentWeather.date, 'shortTime', locale));
+    expect(cardSubtitles[0].innerHTML).toContain(titleCase(testCurrentWeather.description));
+    expect(cardSubtitles[1].innerHTML).toContain(testCurrentWeather.wind_speed + ' km/h Winds');
+    expect(cardSubtitles[1].innerHTML).toContain(testCurrentWeather.humidity + '% Humidity');
+    expect(temp.innerHTML).toBe(testCurrentWeather.temperature + '°C');
     expect(recommendation.innerHTML).toMatch(
-      recommendations.default[component.weather.icon_id].recommendation
+      recommendations.default[testCurrentWeather.icon_id].recommendation
     );
     expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(forecastItems.length).toEqual(5, 'Five day forecast');
     expect(moodItems.length).toEqual(4, 'Four mood items');
     expect(activityItems.length).toEqual(4, 'Four activity items');
-    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons.default[component.weather.icon_id].icon);
+    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons.default[testCurrentWeather.icon_id].icon);
   });
 
   it('should show the current weather for the default city as well as a recommendation based on the weather', () => {
@@ -153,14 +156,14 @@ describe('WeatherComponent', () => {
     expect(getWeatherSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.weather).toBeDefined();
     expect(component.weather.city).toEqual(defaultCity);
-    expect(component.weather.condition).toEqual(200);
-    expect(component.weather.country).toEqual('KE');
-    expect(component.weather.description).toEqual('broken clouds');
-    expect(component.weather.humidity).toEqual(88);
-    expect(component.weather.max).toEqual(22);
-    expect(component.weather.min).toEqual(13);
-    expect(component.weather.temperature).toEqual(17);
-    expect(component.weather.wind_speed).toEqual(4);
+    expect(component.weather.condition).toEqual(testCurrentWeather.condition);
+    expect(component.weather.country).toEqual(testCurrentWeather.country);
+    expect(component.weather.description).toEqual(testCurrentWeather.description);
+    expect(component.weather.humidity).toEqual(testCurrentWeather.humidity);
+    expect(component.weather.max).toEqual(testCurrentWeather.max);
+    expect(component.weather.min).toEqual(testCurrentWeather.min);
+    expect(component.weather.temperature).toEqual(testCurrentWeather.temperature);
+    expect(component.weather.wind_speed).toEqual(testCurrentWeather.wind_speed);
     expect(component.recommendation).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(component.icon).toEqual('wi wi-day-cloudy-gusts');
   });
@@ -173,7 +176,7 @@ describe('WeatherComponent', () => {
     expect(getForecastSpy).toHaveBeenCalledTimes(1);
     expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.forecast).toBeDefined();
-    expect(component.forecast.length).toEqual(5);
+    expect(component.forecast.length).toEqual(testFiveDayForecast.length, 'Five forecast items');
     expect(component.forecast[0].description).toEqual('few clouds');
     expect(component.forecast[0].max).toEqual(21.53);
     expect(component.forecast[0].min).toEqual(12.98);
@@ -213,13 +216,15 @@ describe('WeatherComponent', () => {
     component.searchWeather();
     fixture.detectChanges();
     expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);
-    expect(cardSubtitles[0].innerHTML).toContain('Saturday, 12:09 PM');
-    expect(cardSubtitles[0].innerHTML).toContain('Few Clouds');
-    expect(cardSubtitles[1].innerHTML).toContain('13 km/h Winds');
-    expect(cardSubtitles[1].innerHTML).toContain('94% Humidity');
-    expect(temp.innerHTML).toMatch(/18°C/);
+    expect(cardTitle.innerHTML).toContain(searchWeatherResult.weather.city + ', ' + searchWeatherResult.weather.country);
+    expect(cardSubtitles[0].innerHTML).toContain(formatDate(searchWeatherResult.weather.date, 'EEEE', locale));
+    expect(cardSubtitles[0].innerHTML).toContain(formatDate(searchWeatherResult.weather.date, 'shortTime', locale));
+    expect(cardSubtitles[0].innerHTML).toContain(titleCase(searchWeatherResult.weather.description));
+    expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.wind_speed + ' km/h Winds');
+    expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.humidity + '% Humidity');
+    expect(temp.innerHTML).toBe(Math.round(searchWeatherResult.weather.temperature) + '°C');
     expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
-    expect(forecastItems.length).toEqual(5, 'Five day forecast');
+    expect(forecastItems.length).toEqual(searchWeatherResult.forecast.length, 'Five day forecast');
   });
 
   it('should throw an error when the city being searched for is invalid', () => {
@@ -306,19 +311,19 @@ describe('WeatherComponent', () => {
   it('should show a list of moods when the moods panel is expanded', () => {
     fixture.detectChanges();
     const moods = nativeEl.querySelectorAll('.mood');
-    expect(moods[0].textContent).toEqual('Happy');
-    expect(moods[1].textContent).toEqual('Melancholy');
-    expect(moods[2].textContent).toEqual('Downbeat');
-    expect(moods[3].textContent).toEqual('Cheerful');
+    expect(moods[0].textContent).toEqual(testMoods[0].name);
+    expect(moods[1].textContent).toEqual(testMoods[1].name);
+    expect(moods[2].textContent).toEqual(testMoods[2].name);
+    expect(moods[3].textContent).toEqual(testMoods[3].name);
   });
 
   it('should show a list of activities when the activities panel is expanded', () => {
     fixture.detectChanges();
     const activities = nativeEl.querySelectorAll('.activity');
-    expect(activities[0].textContent).toEqual('Dancing');
-    expect(activities[1].textContent).toEqual('Kayaking');
-    expect(activities[2].textContent).toEqual('Cycling');
-    expect(activities[3].textContent).toEqual('Reading');
+    expect(activities[0].textContent).toEqual(testActivities[0].name);
+    expect(activities[1].textContent).toEqual(testActivities[1].name);
+    expect(activities[2].textContent).toEqual(testActivities[2].name);
+    expect(activities[3].textContent).toEqual(testActivities[3].name);
   });
 
   it('should add a new activity to the list of activities when the save button is clicked', () => {
@@ -329,7 +334,7 @@ describe('WeatherComponent', () => {
     activityInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
     const saveBtn = debugEl.query(By.css('#saveActivity'));
-    expect(component.activities.length).toEqual(4, '4 activities');
+    expect(component.activities.length).toEqual(testActivities.length, '4 activities');
     click(saveBtn);
     fixture.detectChanges();
     expect(component.activities.length).toEqual(5, '5 activities');
@@ -358,6 +363,7 @@ describe('WeatherComponent', () => {
   });
 });
 
+// Helpers
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
   const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
   evt.initCustomEvent(eventName, bubbles, cancelable, null);
@@ -377,4 +383,11 @@ function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents
   } else {
     el.triggerEventHandler('click', eventObj);
   }
+}
+
+function titleCase(word: string) {
+  const result = word.replace(/\w\S*/g, (str) => {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+  });
+  return result;
 }
