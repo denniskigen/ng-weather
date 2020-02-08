@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "ng-weather"
+  "defaultProject": "ng-weather",
+  "cli": {
+    "analytics": "89aab6ee-0f5c-4f28-acee-8583fe3125d1"
+  }
 }
