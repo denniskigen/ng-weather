@@ -16,20 +16,6 @@ export const testCurrentWeather: Weather = {
   min: 13
 };
 
-export const testActivities = [
-  { id: 1, name: 'Dancing' },
-  { id: 2, name: 'Kayaking' },
-  { id: 3, name: 'Cycling' },
-  { id: 4, name: 'Reading' }
-];
-
-export const testMoods = [
-  { id: 1, name: 'Happy' },
-  { id: 2, name: 'Melancholy' },
-  { id: 3, name: 'Downbeat' },
-  { id: 4, name: 'Cheerful' }
-];
-
 export const testFiveDayForecast: Weather[] = [
   {
     date: 1559725200000,

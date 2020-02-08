@@ -8,7 +8,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
-import { ApiService } from './api.service';
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherService } from './weather.service';
 import { RoundTemperaturePipe } from './round-temperature.pipe';
@@ -30,7 +29,7 @@ import { CapitalizePipe } from './capitalize.pipe';
     MaterialModule,
     ReactiveFormsModule
   ],
-  providers: [ ApiService, WeatherService ],
-  bootstrap: [ AppComponent ]
+  providers: [WeatherService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

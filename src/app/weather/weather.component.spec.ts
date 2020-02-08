@@ -4,16 +4,13 @@ import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 
 import { of } from 'rxjs';
 
 import { WeatherComponent } from './weather.component';
-import { ApiService } from '../api.service';
 import { WeatherService } from '../weather.service';
 import {
-  searchWeatherResult, testCurrentWeather, testFiveDayForecast,
-  testActivities, testMoods
+  searchWeatherResult, testCurrentWeather, testFiveDayForecast
 } from '../weather.mock';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
@@ -33,19 +30,6 @@ const mock404ErrorResponse = new HttpErrorResponse({
 const weatherServiceStub = {
   getCurrentWeather: () => of(testCurrentWeather),
   getFiveDayForecast: () => of(testFiveDayForecast)
-};
-
-const apiServiceStub = {
-  getActivities: () => of(testActivities),
-  getMoods: () => of(testMoods),
-  createActivity: (activity: any) => of({
-    id: testActivities.length + 1,
-    name: activity.name
-  }),
-  createMood: (mood: any) => of({
-    id: testMoods.length + 1,
-    name: mood.name
-  })
 };
 
 describe('WeatherComponent', () => {
@@ -70,10 +54,6 @@ describe('WeatherComponent', () => {
         RoundTemperaturePipe
       ],
       providers: [
-        {
-          provide: ApiService,
-          useValue: apiServiceStub
-        },
         {
           provide: WeatherService,
           useValue: weatherServiceStub
@@ -105,11 +85,9 @@ describe('WeatherComponent', () => {
     expect(component.forecast.length).not.toBeGreaterThan(0, 'No forecasts');
   });
 
-  it('should display the current weather, five day forecast, recommendation, activities and moods after the component initializes', () => {
+  it('should display the current weather, five day forecast and recommendation after the component initializes', () => {
     const getWeatherSpy = spyOn(component, 'getWeather').and.callThrough();
     const getForecastSpy = spyOn(component, 'getForecast').and.callThrough();
-    const getActivitiesSpy = spyOn(component, 'getActivities').and.callThrough();
-    const getMoodsSpy = spyOn(component, 'getMoods').and.callThrough();
 
     expect(component.city).toEqual(defaultCity, 'default city');
     fixture.detectChanges();
@@ -117,8 +95,6 @@ describe('WeatherComponent', () => {
     expect(getWeatherSpy).toHaveBeenCalledWith(defaultCity);
     expect(getForecastSpy).toHaveBeenCalledTimes(1);
     expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
-    expect(getActivitiesSpy).toHaveBeenCalledTimes(1);
-    expect(getMoodsSpy).toHaveBeenCalledTimes(1);
     expect(component.city).toEqual(defaultCity, 'default city');
     fixture.detectChanges();
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
@@ -126,8 +102,6 @@ describe('WeatherComponent', () => {
     const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
     const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
-    const activityItems = nativeEl.querySelectorAll('.activity');
-    const moodItems = nativeEl.querySelectorAll('.mood');
     const weatherIcon = <HTMLElement>nativeEl.querySelector('.huge.my-wi');
 
     expect(cardTitle.innerHTML).toContain(testCurrentWeather.city + ', ' + testCurrentWeather.country);
@@ -141,9 +115,6 @@ describe('WeatherComponent', () => {
       recommendations['default'][testCurrentWeather.icon_id].recommendation
     );
     expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
-    expect(forecastItems.length).toEqual(5, 'Five day forecast');
-    expect(moodItems.length).toEqual(4, 'Four mood items');
-    expect(activityItems.length).toEqual(4, 'Four activity items');
     expect(weatherIcon.className).toContain('wi wi-' + weatherIcons['default'][testCurrentWeather.icon_id].icon);
   });
 
@@ -280,86 +251,6 @@ describe('WeatherComponent', () => {
     expect(component.error.error.message).toEqual('Could not fetch forecast data from server');
     const forecastErrMsg = <HTMLElement>nativeEl.querySelector('mat-error.err');
     expect(forecastErrMsg.textContent).toMatch(/Http failure response/);
-  });
-
-  it('should throw an error when moods or activities cannot be retrieved from the database', () => {
-    fixture.detectChanges();
-    spyOn(component, 'getActivities').and.callFake(() => {
-      component.activitiesErr = new HttpErrorResponse({
-        status: 0,
-        statusText: 'Unknown Error'
-      });
-    });
-
-    spyOn(component, 'getMoods').and.callFake(() => {
-      component.moodsErr = new HttpErrorResponse({
-        status: 0,
-        statusText: 'Unknown Error'
-      });
-    });
-
-    // get moods and activities
-    component.getMoods();
-    component.getActivities();
-    fixture.detectChanges();
-    const activityErrMsg = <HTMLElement>nativeEl.querySelector('#activityErr');
-    const moodErrMsg = <HTMLElement>nativeEl.querySelector('#moodErr');
-    expect(activityErrMsg.textContent).toContain('Couldn\'t reach the database.');
-    expect(moodErrMsg.textContent).toContain('Couldn\'t reach the database.');
-  });
-
-  it('should show a list of moods when the moods panel is expanded', () => {
-    fixture.detectChanges();
-    const moods = nativeEl.querySelectorAll('.mood');
-    expect(moods[0].textContent).toEqual(testMoods[0].name);
-    expect(moods[1].textContent).toEqual(testMoods[1].name);
-    expect(moods[2].textContent).toEqual(testMoods[2].name);
-    expect(moods[3].textContent).toEqual(testMoods[3].name);
-  });
-
-  it('should show a list of activities when the activities panel is expanded', () => {
-    fixture.detectChanges();
-    const activities = nativeEl.querySelectorAll('.activity');
-    expect(activities[0].textContent).toEqual(testActivities[0].name);
-    expect(activities[1].textContent).toEqual(testActivities[1].name);
-    expect(activities[2].textContent).toEqual(testActivities[2].name);
-    expect(activities[3].textContent).toEqual(testActivities[3].name);
-  });
-
-  it('should add a new activity to the list of activities when the save button is clicked', () => {
-    const addActivitySpy = spyOn(component, 'addActivity').and.callThrough();
-    const activityInput = <HTMLInputElement>nativeEl.querySelector('#activityInput');
-
-    activityInput.value = 'Strength Training';
-    activityInput.dispatchEvent(newEvent('input'));
-    fixture.detectChanges();
-    const saveBtn = debugEl.query(By.css('#saveActivity'));
-    expect(component.activities.length).toEqual(testActivities.length, '4 activities');
-    click(saveBtn);
-    fixture.detectChanges();
-    expect(component.activities.length).toEqual(5, '5 activities');
-    const activityItems = nativeEl.querySelectorAll('.activity');
-    expect(activityItems[4].textContent).toEqual('Strength Training');
-    expect(addActivitySpy).toHaveBeenCalledTimes(1);
-    expect(addActivitySpy).toHaveBeenCalledWith('Strength Training');
-  });
-
-  it('should add a new mood to the list of moods when the save button is clicked', () => {
-    const addMoodSpy = spyOn(component, 'addMood').and.callThrough();
-    const moodInput = <HTMLInputElement>nativeEl.querySelector('#moodInput');
-
-    moodInput.value = 'Tired';
-    moodInput.dispatchEvent(newEvent('input'));
-    fixture.detectChanges();
-    const saveBtn = debugEl.query(By.css('#saveMood'));
-    expect(component.moods.length).toEqual(4, '4 moods');
-    click(saveBtn);
-    fixture.detectChanges();
-    expect(component.moods.length).toEqual(5, '5 moods');
-    const moodItems = nativeEl.querySelectorAll('.mood');
-    expect(moodItems[4].textContent).toEqual('Tired');
-    expect(addMoodSpy).toHaveBeenCalledTimes(1);
-    expect(addMoodSpy).toHaveBeenCalledWith('Tired');
   });
 });
 
