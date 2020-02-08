@@ -35,7 +35,7 @@ describe('ApiService (with spies)', () => {
   });
 
   it('should be created', () => {
-    service = TestBed.get(ApiService);
+    service = TestBed.inject(ApiService);
     expect(service).toBeTruthy();
   });
 
@@ -129,9 +129,9 @@ describe('ApiService (with mocks): ', () => {
       imports: [ HttpClientTestingModule ]
     });
 
-    httpClient = TestBed.get(HttpClient);
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(ApiService);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(ApiService);
   });
 
   afterEach(() => {

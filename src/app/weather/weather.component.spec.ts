@@ -85,7 +85,7 @@ describe('WeatherComponent', () => {
   }));
 
   beforeEach(() => {
-    service = TestBed.get(WeatherService);
+    service = TestBed.inject(WeatherService);
     fixture = TestBed.createComponent(WeatherComponent);
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
