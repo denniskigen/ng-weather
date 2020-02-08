@@ -5,7 +5,10 @@
         <mat-icon class="search-icon" matPrefix>search</mat-icon>
         <input matInput class="search" type="search" placeholder="Enter city name" type="text" [formControl]="search">
       </mat-form-field>
-      <mat-error class="err" *ngIf="error && error.message">{{ error.message | capitalize }}</mat-error>
+      <div class="err">
+        <mat-error data-testid="weather-error" *ngIf="error && error.message">{{ error.message | capitalize }}</mat-error>
+        <mat-error data-testid="forecast-error" *ngIf="error && !error.message">{{ error | capitalize }}</mat-error>
+      </div>
     </form>
   </div>
 </div>

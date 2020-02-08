@@ -43,8 +43,7 @@ export class WeatherComponent implements OnInit {
       },
       error => {
         this.validSearch = true;
-        console.error('error getting current weather: ', error);
-        this.error = error.error;
+        this.error = error.error ? error.error : error;
       }
     );
   }
@@ -55,8 +54,7 @@ export class WeatherComponent implements OnInit {
         this.forecast = data;
       },
       error => {
-        console.error('error getting five day forecast: ', error);
-        this.error = error.error;
+        this.error = error.error ? error.error : error;
       }
     );
   }

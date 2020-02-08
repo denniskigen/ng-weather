@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { WeatherComponent } from './weather.component';
 import { WeatherService } from '../weather.service';
@@ -17,15 +17,6 @@ import * as recommendations from '../recommendations.json';
 
 import { CapitalizePipe } from '../capitalize.pipe';
 import { RoundTemperaturePipe } from '../round-temperature.pipe';
-
-const mock404ErrorResponse = new HttpErrorResponse({
-  error: {
-    cod: '404',
-    message: 'city not found'
-  },
-  status: 404,
-  statusText: 'Not Found'
-});
 
 const weatherServiceStub = {
   getCurrentWeather: () => of(testCurrentWeather),
@@ -179,13 +170,18 @@ describe('WeatherComponent', () => {
     searchInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
     expect(searchInput.value).toEqual('Rio De Janeiro');
-    spyOn(component, 'searchWeather').and.callFake(() => {
-      component.weather = searchWeatherResult.weather;
-      component.forecast = searchWeatherResult.forecast;
-    });
-    // search weather
-    component.searchWeather();
+    const getWeatherSpy = spyOn(component, 'getWeather');
+    getWeatherSpy.and.callThrough();
+    const getCurrentWeatherSpy = spyOn(service, 'getCurrentWeather');
+    getCurrentWeatherSpy.and.returnValue(of(searchWeatherResult.weather));
+    const getForecastSpy = spyOn(component, 'getForecast');
+    getForecastSpy.and.callThrough();
+    const getFiveDayForecastSpy = spyOn(service, 'getFiveDayForecast');
+    getFiveDayForecastSpy.and.returnValue(of(searchWeatherResult.forecast));
+    component.getWeather(component.city);
+    component.getForecast(component.city);
     fixture.detectChanges();
+
     expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);
     expect(cardTitle.innerHTML).toContain(searchWeatherResult.weather.city + ', ' + searchWeatherResult.weather.country);
     expect(cardSubtitles[0].innerHTML).toContain(formatDate(searchWeatherResult.weather.date, 'EEEE', locale));
@@ -194,7 +190,7 @@ describe('WeatherComponent', () => {
     expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.wind_speed + ' km/h Winds');
     expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.humidity + '% Humidity');
     expect(temp.innerHTML).toBe(Math.round(searchWeatherResult.weather.temperature) + '°C');
-    expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
+    expect(recommendation.innerHTML).toEqual('Great day for a bit of laundry and maybe a nice picnic date later :)');
     expect(forecastItems.length).toEqual(searchWeatherResult.forecast.length, 'Five day forecast');
   });
 
@@ -202,55 +198,77 @@ describe('WeatherComponent', () => {
     fixture.detectChanges();
     const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
 
+    const notFoundError = {
+      status: 404,
+      statusText: 'Not Found',
+      url: 'https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeiro&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3',
+      ok: false,
+      name: 'HttpErrorResponse',
+      // tslint:disable-next-line: max-line-length
+      message: 'Http failure response for https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeir&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3: 404 Not Found',
+      error: {cod: '404', message: 'city not found'}
+    };
+
     searchInput.value = 'Ryo De Janero';
     searchInput.dispatchEvent(newEvent('input'));
     fixture.detectChanges();
     expect(searchInput.value).toEqual('Ryo De Janero');
-    spyOn(component, 'searchWeather').and.callFake(() => {
-      component.error = mock404ErrorResponse.error;
-    });
-    // search weather
-    component.searchWeather();
+    spyOn(component, 'searchWeather').and.returnValue(of(notFoundError));
+    const getWeatherSpy = spyOn(component, 'getWeather');
+    getWeatherSpy.and.callThrough();
+    const getCurrentWeatherSpy = spyOn(service, 'getCurrentWeather');
+    getCurrentWeatherSpy.and.returnValue(throwError(notFoundError));
+    const getForecastSpy = spyOn(component, 'getForecast');
+    getForecastSpy.and.callThrough();
+    const getFiveDayForecastSpy = spyOn(service, 'getFiveDayForecast');
+    getFiveDayForecastSpy.and.returnValue(throwError(notFoundError));
+    component.getWeather(component.city);
+    component.getForecast(component.city);
     fixture.detectChanges();
     const err = <HTMLElement>nativeEl.querySelector('.err');
     expect(err.textContent).toContain('City not found');
   });
 
   it('should throw an error when the current weather and forecast cannot be retrieved', () => {
-    fixture.detectChanges();
-    spyOn(component, 'getWeather').and.callFake(() => {
-      component.error = new HttpErrorResponse({
-        status: 500,
-        statusText: 'Server Error',
-        error: {
-          status: 500,
-          message: 'Could not fetch weather data from server'
-        }
-      });
-    });
+    const serverError = {
+      status: 500,
+      statusText: 'An internal server error occurred',
+      url: null,
+      ok: false,
+      name: 'HttpErrorResponse',
+      message: 'Http failure response for (unknown url): 500 An internal server error occurred',
+      error: 'Internal Server Error'
+    };
 
-    spyOn(component, 'getForecast').and.callFake(() => {
-      component.error = new HttpErrorResponse({
-        statusText: 'Server Error',
-        error: {
-          status: 500,
-          message: 'Could not fetch forecast data from server'
-        }
-      });
-    });
-
+    const getWeatherSpy = spyOn(component, 'getWeather');
+    getWeatherSpy.and.callThrough();
+    const getCurrentWeatherSpy = spyOn(service, 'getCurrentWeather');
+    getCurrentWeatherSpy.and.returnValue(throwError(serverError));
+    const getForecastSpy = spyOn(component, 'getForecast');
+    getForecastSpy.and.callThrough();
+    const getFiveDayForecastSpy = spyOn(service, 'getFiveDayForecast');
+    getFiveDayForecastSpy.and.returnValue(throwError(serverError));
     component.getWeather(defaultCity);
+    component.getForecast(defaultCity);
+    expect(component.error).toBeTruthy();
+    expect(component.error).toEqual('Internal Server Error');
+
+    // Error cleared after reload
     fixture.detectChanges();
-    expect(component.error).toBeDefined();
-    expect(component.error.error.message).toEqual('Could not fetch weather data from server');
-    const weatherErrMsg = <HTMLElement>nativeEl.querySelector('mat-error.err');
-    expect(weatherErrMsg.textContent).toMatch(/Http failure response/);
+    expect(component.error).toBeFalsy();
+    expect(component.error).toEqual('');
+
+    getCurrentWeatherSpy.and.callThrough();
+    getWeatherSpy.and.callThrough();
+    getFiveDayForecastSpy.and.callThrough();
+    getForecastSpy.and.callThrough();
+    component.getWeather(defaultCity);
     component.getForecast(defaultCity);
     fixture.detectChanges();
-    expect(component.error).toBeDefined();
-    expect(component.error.error.message).toEqual('Could not fetch forecast data from server');
-    const forecastErrMsg = <HTMLElement>nativeEl.querySelector('mat-error.err');
-    expect(forecastErrMsg.textContent).toMatch(/Http failure response/);
+
+    // Error cleared after reload
+    expect(component.error).toBeFalsy();
+    expect(component.error).toEqual('');
   });
 });
 
