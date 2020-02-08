@@ -21,7 +21,7 @@ export class WeatherComponent implements OnInit {
   forecast: any[] = [];
   forecastIcons = [];
   icon = '';
-  icons = weatherIcons.default;
+  icons = weatherIcons['default'];
   moods: any;
   validSearch: Boolean = false;
   prefix = 'wi wi-';
@@ -31,7 +31,7 @@ export class WeatherComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private weatherService: WeatherService) {}
+    private weatherService: WeatherService) { }
 
   ngOnInit(): void {
     this.getWeather(this.city);
@@ -46,9 +46,8 @@ export class WeatherComponent implements OnInit {
     this.weatherService.getCurrentWeather(city).subscribe(
       data => {
         this.weather = data;
-        this.recommendation =
-          recommendations.default[data.icon_id].recommendation;
-        this.icon = this.prefix + weatherIcons.default[data.icon_id].icon;
+        this.recommendation = recommendations['default'][data.icon_id].recommendation;
+        this.icon = this.prefix + weatherIcons['default'][data.icon_id].icon;
       },
       error => {
         this.validSearch = true;
@@ -74,22 +73,22 @@ export class WeatherComponent implements OnInit {
     this.search
       .valueChanges
       .pipe(
-          debounceTime(1000),
-          distinctUntilChanged()
-        )
-        .subscribe(
-          (searchValue: string) => {
-            if (searchValue) {
-              searchValue = searchValue.trim();
-              this.resetError();
-              this.getWeather(searchValue);
-              this.getForecast(searchValue);
-            }
-          },
-          err => {
-            console.error('Search Error: ', err);
+        debounceTime(1000),
+        distinctUntilChanged()
+      )
+      .subscribe(
+        (searchValue: string) => {
+          if (searchValue) {
+            searchValue = searchValue.trim();
+            this.resetError();
+            this.getWeather(searchValue);
+            this.getForecast(searchValue);
           }
-        );
+        },
+        err => {
+          console.error('Search Error: ', err);
+        }
+      );
   }
 
   addActivity(name: string): void {
