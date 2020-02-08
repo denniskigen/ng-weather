@@ -138,13 +138,13 @@ describe('WeatherComponent', () => {
     expect(cardSubtitles[1].innerHTML).toContain(testCurrentWeather.humidity + '% Humidity');
     expect(temp.innerHTML).toBe(testCurrentWeather.temperature + '°C');
     expect(recommendation.innerHTML).toMatch(
-      recommendations.default[testCurrentWeather.icon_id].recommendation
+      recommendations['default'][testCurrentWeather.icon_id].recommendation
     );
     expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
     expect(forecastItems.length).toEqual(5, 'Five day forecast');
     expect(moodItems.length).toEqual(4, 'Four mood items');
     expect(activityItems.length).toEqual(4, 'Four activity items');
-    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons.default[testCurrentWeather.icon_id].icon);
+    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons['default'][testCurrentWeather.icon_id].icon);
   });
 
   it('should show the current weather for the default city as well as a recommendation based on the weather', () => {
