@@ -25,7 +25,7 @@
     "@mdi/font": "^2.8.94",
     "core-js": "^2.6.11",
     "lodash": "^4.17.15",
-    "rxjs": "6.5.4",
+    "rxjs": "6.5.5",
     "rxjs-compat": "6.3.3",
     "serverless-http": "^2.3.2",
     "tslib": "^1.11.1",
