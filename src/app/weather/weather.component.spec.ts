@@ -9,7 +9,9 @@ import { of, throwError } from 'rxjs';
 import { WeatherComponent } from './weather.component';
 import { WeatherService } from '../weather.service';
 import {
-  searchWeatherResult, testCurrentWeather, testFiveDayForecast
+  searchWeatherResult,
+  testCurrentWeather,
+  testFiveDayForecast
 } from '../weather.mock';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
@@ -28,18 +30,21 @@ const serverError = {
   url: null,
   ok: false,
   name: 'HttpErrorResponse',
-  message: 'Http failure response for (unknown url): 500 An internal server error occurred',
+  message:
+    'Http failure response for (unknown url): 500 An internal server error occurred',
   error: 'Internal Server Error'
 };
 
 const notFoundError = {
   status: 404,
   statusText: 'Not Found',
-  url: 'https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeiro&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3',
+  url:
+    'https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeiro&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3',
   ok: false,
   name: 'HttpErrorResponse',
   // tslint:disable-next-line: max-line-length
-  message: 'Http failure response for https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeir&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3: 404 Not Found',
+  message:
+    'Http failure response for https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeir&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3: 404 Not Found',
   error: { cod: '404', message: 'city not found' }
 };
 
@@ -54,16 +59,8 @@ describe('WeatherComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
-        ReactiveFormsModule
-      ],
-      declarations: [
-        WeatherComponent,
-        CapitalizePipe,
-        RoundTemperaturePipe
-      ],
+      imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+      declarations: [WeatherComponent, CapitalizePipe, RoundTemperaturePipe],
       providers: [
         {
           provide: WeatherService,
@@ -71,8 +68,7 @@ describe('WeatherComponent', () => {
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -111,22 +107,40 @@ describe('WeatherComponent', () => {
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
     const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
-    const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
+    const recommendation = <HTMLElement>(
+      nativeEl.querySelector('.recommendation')
+    );
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
     const weatherIcon = <HTMLElement>nativeEl.querySelector('.huge.my-wi');
 
-    expect(cardTitle.innerHTML).toContain(testCurrentWeather.city + ', ' + testCurrentWeather.country);
-    expect(cardSubtitles[0].innerHTML).toContain(formatDate(testCurrentWeather.date, 'EEEE', locale));
-    expect(cardSubtitles[0].innerHTML).toContain(formatDate(testCurrentWeather.date, 'shortTime', locale));
-    expect(cardSubtitles[0].innerHTML).toContain(titleCase(testCurrentWeather.description));
-    expect(cardSubtitles[1].innerHTML).toContain(testCurrentWeather.wind_speed + ' km/h Winds');
-    expect(cardSubtitles[1].innerHTML).toContain(testCurrentWeather.humidity + '% Humidity');
+    expect(cardTitle.innerHTML).toContain(
+      testCurrentWeather.city + ', ' + testCurrentWeather.country
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      formatDate(testCurrentWeather.date, 'EEEE', locale)
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      formatDate(testCurrentWeather.date, 'shortTime', locale)
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      titleCase(testCurrentWeather.description)
+    );
+    expect(cardSubtitles[1].innerHTML).toContain(
+      testCurrentWeather.wind_speed + ' km/h Winds'
+    );
+    expect(cardSubtitles[1].innerHTML).toContain(
+      testCurrentWeather.humidity + '% Humidity'
+    );
     expect(temp.innerHTML).toBe(testCurrentWeather.temperature + '°C');
     expect(recommendation.innerHTML).toMatch(
       recommendations['default'][testCurrentWeather.icon_id].recommendation
     );
-    expect(recommendation.innerHTML).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
-    expect(weatherIcon.className).toContain('wi wi-' + weatherIcons['default'][testCurrentWeather.icon_id].icon);
+    expect(recommendation.innerHTML).toMatch(
+      /'Netflix and chill' weather. It's pleasant outside/
+    );
+    expect(weatherIcon.className).toContain(
+      'wi wi-' + weatherIcons['default'][testCurrentWeather.icon_id].icon
+    );
     expect(forecastItems.length).toEqual(5);
   });
 
@@ -141,13 +155,19 @@ describe('WeatherComponent', () => {
     expect(component.weather.city).toEqual(defaultCity);
     expect(component.weather.condition).toEqual(testCurrentWeather.condition);
     expect(component.weather.country).toEqual(testCurrentWeather.country);
-    expect(component.weather.description).toEqual(testCurrentWeather.description);
+    expect(component.weather.description).toEqual(
+      testCurrentWeather.description
+    );
     expect(component.weather.humidity).toEqual(testCurrentWeather.humidity);
     expect(component.weather.max).toEqual(testCurrentWeather.max);
     expect(component.weather.min).toEqual(testCurrentWeather.min);
-    expect(component.weather.temperature).toEqual(testCurrentWeather.temperature);
+    expect(component.weather.temperature).toEqual(
+      testCurrentWeather.temperature
+    );
     expect(component.weather.wind_speed).toEqual(testCurrentWeather.wind_speed);
-    expect(component.recommendation).toMatch(/'Netflix and chill' weather. It's pleasant outside/);
+    expect(component.recommendation).toMatch(
+      /'Netflix and chill' weather. It's pleasant outside/
+    );
     expect(component.icon).toEqual('wi wi-day-cloudy-gusts');
   });
 
@@ -159,7 +179,10 @@ describe('WeatherComponent', () => {
     expect(getForecastSpy).toHaveBeenCalledTimes(1);
     expect(getForecastSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.forecast).toBeDefined();
-    expect(component.forecast.length).toEqual(testFiveDayForecast.length, 'Five forecast items');
+    expect(component.forecast.length).toEqual(
+      testFiveDayForecast.length,
+      'Five forecast items'
+    );
     expect(component.forecast[0].description).toEqual('few clouds');
     expect(component.forecast[0].max).toEqual(21.53);
     expect(component.forecast[0].min).toEqual(12.98);
@@ -178,16 +201,24 @@ describe('WeatherComponent', () => {
   });
 
   it('should show the current weather and forecast for a valid city when it is typed into the search input', () => {
-    spyOn(service, 'getCurrentWeather').and.callFake(() => of(searchWeatherResult.weather));
-    spyOn(service, 'getFiveDayForecast').and.callFake(() => of(searchWeatherResult.forecast));
+    spyOn(service, 'getCurrentWeather').and.callFake(() =>
+      of(searchWeatherResult.weather)
+    );
+    spyOn(service, 'getFiveDayForecast').and.callFake(() =>
+      of(searchWeatherResult.forecast)
+    );
     const searchWeatherSpy = spyOn(component, 'searchWeather');
     expect(component.city).toEqual(defaultCity);
     fixture.detectChanges();
-    const searchInput = <HTMLInputElement>nativeEl.querySelector('input.search');
+    const searchInput = <HTMLInputElement>(
+      nativeEl.querySelector('input.search')
+    );
     const cardTitle = <HTMLElement>nativeEl.querySelector('mat-card-title');
     const cardSubtitles = nativeEl.querySelectorAll('mat-card-subtitle');
     const temp = <HTMLElement>nativeEl.querySelector('.large.temp');
-    const recommendation = <HTMLElement>nativeEl.querySelector('.recommendation');
+    const recommendation = <HTMLElement>(
+      nativeEl.querySelector('.recommendation')
+    );
     const forecastItems = nativeEl.querySelectorAll('mat-list-item.forecast');
     searchInput.value = 'Rio De Janeiro';
     searchInput.dispatchEvent(newEvent('input'));
@@ -200,15 +231,36 @@ describe('WeatherComponent', () => {
     expect(searchInput.value).toEqual('Rio De Janeiro');
     expect(searchWeatherSpy).toHaveBeenCalledTimes(1);
     expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);
-    expect(cardTitle.innerHTML).toContain(searchWeatherResult.weather.city + ', ' + searchWeatherResult.weather.country);
-    expect(cardSubtitles[0].innerHTML).toContain(formatDate(searchWeatherResult.weather.date, 'EEEE', locale));
-    expect(cardSubtitles[0].innerHTML).toContain(formatDate(searchWeatherResult.weather.date, 'shortTime', locale));
-    expect(cardSubtitles[0].innerHTML).toContain(titleCase(searchWeatherResult.weather.description));
-    expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.wind_speed + ' km/h Winds');
-    expect(cardSubtitles[1].innerHTML).toContain(searchWeatherResult.weather.humidity + '% Humidity');
-    expect(temp.innerHTML).toBe(Math.round(searchWeatherResult.weather.temperature) + '°C');
-    expect(recommendation.innerHTML).toEqual('Great day for a bit of laundry and maybe a nice picnic date later :)');
-    expect(forecastItems.length).toEqual(searchWeatherResult.forecast.length, 'Five day forecast');
+    expect(cardTitle.innerHTML).toContain(
+      searchWeatherResult.weather.city +
+        ', ' +
+        searchWeatherResult.weather.country
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      formatDate(searchWeatherResult.weather.date, 'EEEE', locale)
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      formatDate(searchWeatherResult.weather.date, 'shortTime', locale)
+    );
+    expect(cardSubtitles[0].innerHTML).toContain(
+      titleCase(searchWeatherResult.weather.description)
+    );
+    expect(cardSubtitles[1].innerHTML).toContain(
+      searchWeatherResult.weather.wind_speed + ' km/h Winds'
+    );
+    expect(cardSubtitles[1].innerHTML).toContain(
+      searchWeatherResult.weather.humidity + '% Humidity'
+    );
+    expect(temp.innerHTML).toBe(
+      Math.round(searchWeatherResult.weather.temperature) + '°C'
+    );
+    expect(recommendation.innerHTML).toEqual(
+      'Great day for a bit of laundry and maybe a nice picnic date later :)'
+    );
+    expect(forecastItems.length).toEqual(
+      searchWeatherResult.forecast.length,
+      'Five day forecast'
+    );
   });
 
   it('should throw an error when the city being searched for is invalid', () => {
@@ -225,7 +277,9 @@ describe('WeatherComponent', () => {
     component.getWeather(defaultCity);
     component.getForecast(defaultCity);
     expect(component.error).toBeTruthy();
-    expect(component.error).toEqual(jasmine.objectContaining({ cod: '404', message: 'city not found' }));
+    expect(component.error).toEqual(
+      jasmine.objectContaining({ cod: '404', message: 'city not found' })
+    );
 
     fixture.detectChanges();
     const err = <HTMLElement>nativeEl.querySelector('.err');
@@ -255,7 +309,7 @@ describe('WeatherComponent', () => {
 
 // Helpers
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  const evt = document.createEvent('CustomEvent'); // MUST be 'CustomEvent'
   evt.initCustomEvent(eventName, bubbles, cancelable, null);
   return evt;
 }
@@ -267,7 +321,10 @@ const ButtonClickEvents = {
 };
 
 /** Simulate element click. Defaults to mouse left-button click event. */
-function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents.left): void {
+function click(
+  el: DebugElement | HTMLElement,
+  eventObj: any = ButtonClickEvents.left
+): void {
   if (el instanceof HTMLElement) {
     el.click();
   } else {

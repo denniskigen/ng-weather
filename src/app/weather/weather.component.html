@@ -3,11 +3,24 @@
     <form>
       <mat-form-field>
         <mat-icon class="search-icon" matPrefix>search</mat-icon>
-        <input matInput class="search" type="search" placeholder="Enter city name" type="text" [formControl]="search">
+        <input
+          matInput
+          class="search"
+          type="search"
+          placeholder="Enter city name"
+          type="text"
+          [formControl]="search"
+        />
       </mat-form-field>
       <div class="err">
-        <mat-error data-testid="weather-error" *ngIf="error && error.message">{{ error.message | capitalize }}</mat-error>
-        <mat-error data-testid="forecast-error" *ngIf="error && !error.message">{{ error | capitalize }}</mat-error>
+        <mat-error data-testid="weather-error" *ngIf="error && error.message">{{
+          error.message | capitalize
+        }}</mat-error>
+        <mat-error
+          data-testid="forecast-error"
+          *ngIf="error && !error.message"
+          >{{ error | capitalize }}</mat-error
+        >
       </div>
     </form>
   </div>
@@ -23,7 +36,8 @@
           </mat-card-title>
           <mat-card-subtitle>
             <span>
-              {{ weather.date | date: 'EEEE' }}, {{ weather.date | date: 'shortTime' }},
+              {{ weather.date | date: 'EEEE' }},
+              {{ weather.date | date: 'shortTime' }},
             </span>
             <span>
               {{ weather.description | titlecase }}
@@ -32,28 +46,37 @@
           <mat-card-content>
             <div fxLayout="row" fxLayoutAlign="center center">
               <div fxFlex="left">
-                <span class="large temp">{{ weather.temperature | roundTemperature }}&deg;C</span>
+                <span class="large temp"
+                  >{{ weather.temperature | roundTemperature }}&deg;C</span
+                >
               </div>
               <div fxFlex class="right">
                 <span class="{{ icon }} huge my-wi"></span>
               </div>
             </div>
             <mat-card-subtitle>
-              <span class="wi wi-strong-wind left sti"></span> {{ weather.wind_speed }} km/h Winds
+              <span class="wi wi-strong-wind left sti"></span>
+              {{ weather.wind_speed }} km/h Winds
               <span class="spaced"></span>
-              <span class="wi wi-humidity sti"></span> {{ weather.humidity }}% Humidity
+              <span class="wi wi-humidity sti"></span> {{ weather.humidity }}%
+              Humidity
             </mat-card-subtitle>
             <p class="recommendation">{{ recommendation }}</p>
             <mat-divider inset="true"></mat-divider>
             <mat-list>
-              <mat-list-item class="forecast" *ngFor="let f of forecast; index as i">
+              <mat-list-item
+                class="forecast"
+                *ngFor="let f of forecast; index as i"
+              >
                 <span fxFlex class="left">{{ f.dt_txt | date: 'EEEE' }}</span>
                 <span fxFlex class="right">
                   <span class="wi wi-{{ icons[f.icon_id].icon }}"></span>
                 </span>
                 <span fxFlex class="right">
                   <span>{{ f.max | roundTemperature }}&deg;</span>
-                  <span class="lighter">/ {{ f.min | roundTemperature }}&deg;</span>
+                  <span class="lighter"
+                    >/ {{ f.min | roundTemperature }}&deg;</span
+                  >
                 </span>
               </mat-list-item>
             </mat-list>

@@ -18,9 +18,10 @@ export class WeatherService {
   getCurrentWeather(city: string): Observable<Weather> {
     return this.http
       .get<CurrentWeatherData>(
-        `${ENV.API_URL}weather/?q=${city}&units=metric&APPID=${ENV.API_KEY}`)
+        `${ENV.API_URL}weather/?q=${city}&units=metric&APPID=${ENV.API_KEY}`
+      )
       .pipe(
-        map(data => this.mapToWeather(data)),
+        map((data) => this.mapToWeather(data)),
         catchError(this.handleError)
       );
   }
@@ -28,7 +29,8 @@ export class WeatherService {
   getFiveDayForecast(city: string): Observable<Weather[]> {
     return this.http
       .get<CurrentWeatherData[]>(
-        `${ENV.API_URL}forecast/?q=${city}&units=metric&APPID=${ENV.API_KEY}`)
+        `${ENV.API_URL}forecast/?q=${city}&units=metric&APPID=${ENV.API_KEY}`
+      )
       .pipe(
         map((data: any) => {
           this.forecast = [];
@@ -86,7 +88,9 @@ export class WeatherService {
     }
 
     // remove undefined fields
-    Object.keys(mapped).forEach(key => mapped[key] === undefined && delete mapped[key]);
+    Object.keys(mapped).forEach(
+      (key) => mapped[key] === undefined && delete mapped[key]
+    );
 
     return mapped;
   }

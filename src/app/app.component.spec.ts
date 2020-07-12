@@ -14,17 +14,16 @@ describe('AppComponent', () => {
   let debugEl: DebugElement;
   let nativeEl: HTMLElement;
 
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
+      imports: [HttpClientTestingModule],
       declarations: [
         AppComponent,
         WeatherComponent,
         CapitalizePipe,
         RoundTemperaturePipe
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 

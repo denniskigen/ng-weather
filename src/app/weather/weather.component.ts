@@ -24,8 +24,7 @@ export class WeatherComponent implements OnInit {
   search = new FormControl();
   weather: any;
 
-  constructor(
-    private weatherService: WeatherService) { }
+  constructor(private weatherService: WeatherService) {}
 
   ngOnInit(): void {
     this.getWeather(this.city);
@@ -36,12 +35,13 @@ export class WeatherComponent implements OnInit {
 
   getWeather(city: string): void {
     this.weatherService.getCurrentWeather(city).subscribe(
-      data => {
+      (data) => {
         this.weather = data;
-        this.recommendation = recommendations['default'][data.icon_id].recommendation;
+        this.recommendation =
+          recommendations['default'][data.icon_id].recommendation;
         this.icon = this.prefix + weatherIcons['default'][data.icon_id].icon;
       },
-      error => {
+      (error) => {
         this.validSearch = true;
         this.error = error.error ? error.error : error;
       }
@@ -50,22 +50,18 @@ export class WeatherComponent implements OnInit {
 
   getForecast(city: string): void {
     this.weatherService.getFiveDayForecast(city).subscribe(
-      data => {
+      (data) => {
         this.forecast = data;
       },
-      error => {
+      (error) => {
         this.error = error.error ? error.error : error;
       }
     );
   }
 
   searchWeather(): void {
-    this.search
-      .valueChanges
-      .pipe(
-        debounceTime(1000),
-        distinctUntilChanged()
-      )
+    this.search.valueChanges
+      .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe(
         (searchValue: string) => {
           if (searchValue) {
@@ -75,7 +71,7 @@ export class WeatherComponent implements OnInit {
             this.getForecast(searchValue);
           }
         },
-        err => {
+        (err) => {
           console.error('Search Error: ', err);
         }
       );

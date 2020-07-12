@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CapitalizePipe implements PipeTransform {
   transform(value: any): any {
-    return (value === null) ? '' : value.charAt(0).toUpperCase() + value.slice(1);
+    return value === null ? '' : value.charAt(0).toUpperCase() + value.slice(1);
   }
 }

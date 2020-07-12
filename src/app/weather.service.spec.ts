@@ -89,7 +89,7 @@ const mappedFiveDayForecast: Weather[] = [
     min: 12.77,
     temperature: 21.27,
     wind_speed: 6
-  },
+  }
 ];
 
 const mockErrorResponse = new HttpErrorResponse({
@@ -104,11 +104,11 @@ describe('WeatherService ', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ]
+      imports: [HttpClientTestingModule]
     });
 
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    service = new WeatherService(<any> httpClientSpy);
+    service = new WeatherService(<any>httpClientSpy);
   });
 
   afterEach(() => {
@@ -146,7 +146,8 @@ describe('WeatherService ', () => {
         expect(data.max).toEqual(mappedCurrentWeather.max);
         expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
         done();
-      }, (err) => {
+      },
+      (err) => {
         console.error('test error: ', err);
         fail('expected weather data, not an error');
         done();
@@ -187,7 +188,8 @@ describe('WeatherService ', () => {
         expect(forecast[4]).toEqual(mappedFiveDayForecast[4]);
         expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
         done();
-      }, (err) => {
+      },
+      (err) => {
         console.error('test error: ', err);
         fail('expected weather data, not an error');
       }

@@ -18,7 +18,7 @@ import { CapitalizePipe } from './capitalize.pipe';
     AppComponent,
     RoundTemperaturePipe,
     WeatherComponent,
-    CapitalizePipe,
+    CapitalizePipe
   ],
   imports: [
     BrowserModule,
@@ -32,4 +32,4 @@ import { CapitalizePipe } from './capitalize.pipe';
   providers: [WeatherService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
