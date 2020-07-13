@@ -24,6 +24,7 @@
     "@angular/router": "^10.0.3",
     "@mdi/font": "^2.8.94",
     "core-js": "^2.6.11",
+    "eslint-plugin-jasmine": "^4.1.1",
     "lodash": "^4.17.19",
     "rxjs": "6.5.5",
     "rxjs-compat": "6.3.3",

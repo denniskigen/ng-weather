@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es2020": true,
-    "node": true
+    "node": true,
+    "jasmine": true
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
@@ -10,7 +11,10 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "jasmine",
+    "@typescript-eslint"
+  ],
   "rules": {},
   "overrides": [
     {
