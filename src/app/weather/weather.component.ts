@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { WeatherService } from '../weather.service';
-import { Forecast, Weather } from '../weather-types';
+import { Forecast, Weather } from '../types';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class WeatherComponent implements OnInit {
   city = 'Eldoret';
-  error: HttpErrorResponse | null = null;
+  error: HttpErrorResponse | undefined = undefined;
   forecast: Forecast[] = [];
   forecastIcons = [];
   icon = '';
@@ -24,7 +24,7 @@ export class WeatherComponent implements OnInit {
   prefix = 'wi wi-';
   recommendation = '';
   search = new FormControl();
-  weather: Weather | null = null;
+  weather: Weather | undefined = undefined;
 
   constructor(private weatherService: WeatherService) {}
 
@@ -87,6 +87,6 @@ export class WeatherComponent implements OnInit {
   }
 
   private resetError() {
-    this.error = null;
+    this.error = undefined;
   }
 }

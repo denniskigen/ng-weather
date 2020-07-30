@@ -79,7 +79,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should not have weather data immediately after the component is constructed', () => {
-    expect(component.weather).not.toBeTruthy();
+    expect(component.weather).toBeUndefined();
     expect(component.forecast.length).not.toBeGreaterThan(0, 'No forecasts');
   });
 
@@ -220,7 +220,7 @@ describe('WeatherComponent', () => {
 
     expect(component.weather).toEqual(searchWeatherResult.weather);
     expect(component.forecast).toEqual(searchWeatherResult.forecast);
-    expect(component.error).toEqual(null);
+    expect(component.error).toBeUndefined();
     expect(searchInput.value).toEqual('Rio De Janeiro');
     expect(searchWeatherSpy).toHaveBeenCalledTimes(1);
     expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);

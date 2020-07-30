@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { of, throwError } from 'rxjs';
 
-import { Weather, Forecast } from './weather-types';
+import { Forecast, Weather } from './types';
 import { WeatherService } from './weather.service';
 import { mockCurrentWeather, mockFiveDayForecast } from './weather.mock';
 

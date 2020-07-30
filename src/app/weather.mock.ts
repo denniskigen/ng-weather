@@ -1,4 +1,4 @@
-import { CurrentWeatherData, Weather, Forecast } from './weather-types';
+import { CurrentWeatherData, Weather, Forecast } from './types';
 
 export const testCurrentWeather: Weather = {
   city: 'Eldoret',

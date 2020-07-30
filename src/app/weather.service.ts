@@ -11,7 +11,7 @@ import {
   ForecastData,
   ForecastListItem,
   Weather,
-} from './weather-types';
+} from './types';
 
 @Injectable({
   providedIn: 'root',
