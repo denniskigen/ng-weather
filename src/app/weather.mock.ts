@@ -1,4 +1,4 @@
-import { CurrentWeatherData, Weather } from './weather';
+import { CurrentWeatherData, Weather, Forecast } from './weather-types';
 
 export const testCurrentWeather: Weather = {
   city: 'Eldoret',
@@ -16,7 +16,7 @@ export const testCurrentWeather: Weather = {
   min: 13
 };
 
-export const testFiveDayForecast: Weather[] = [
+export const testFiveDayForecast: Forecast[] = [
   {
     date: 1559725200000,
     description: 'few clouds',

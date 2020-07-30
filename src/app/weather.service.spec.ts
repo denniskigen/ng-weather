@@ -1,15 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 import { of, throwError } from 'rxjs';
 
-import { Weather } from './weather';
+import { Weather, Forecast } from './weather-types';
 import { WeatherService } from './weather.service';
 import { mockCurrentWeather, mockFiveDayForecast } from './weather.mock';
 
 describe('WeatherService ', () => {
-  let httpClientSpy: { get: jasmine.Spy };
+  let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let service: WeatherService;
 
   beforeEach(() => {
@@ -18,7 +19,7 @@ describe('WeatherService ', () => {
     });
 
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    service = new WeatherService(<any>httpClientSpy);
+    service = new WeatherService(httpClientSpy);
   });
 
   afterEach(() => {
@@ -70,7 +71,7 @@ describe('WeatherService ', () => {
     httpClientSpy.get.and.callFake(() => throwError(mockErrorResponse));
 
     service.getCurrentWeather(city).subscribe(
-      (data) => fail('expected an error, not current weather data'),
+      () => fail('expected an error, not current weather data'),
       (err) => {
         expect(err).toBeTruthy();
         expect(err.status).toEqual(500);
@@ -111,7 +112,7 @@ describe('WeatherService ', () => {
     httpClientSpy.get.and.callFake(() => throwError(mockErrorResponse));
 
     service.getFiveDayForecast(city).subscribe(
-      (data) => fail('expected an error, not forecast data'),
+      () => fail('expected an error, not forecast data'),
       (err) => {
         expect(err).toBeTruthy();
         expect(err.status).toEqual(500);
@@ -124,7 +125,6 @@ describe('WeatherService ', () => {
     );
   });
 });
-
 
 const mappedCurrentWeather: Weather = {
   city: 'Eldoret',
@@ -142,7 +142,7 @@ const mappedCurrentWeather: Weather = {
   min: 13
 };
 
-const mappedFiveDayForecast: Weather[] = [
+const mappedFiveDayForecast: Forecast[] = [
   {
     date: 1559725200000,
     description: 'few clouds',

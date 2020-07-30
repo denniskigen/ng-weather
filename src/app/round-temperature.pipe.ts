@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'roundTemperature'
 })
 export class RoundTemperaturePipe implements PipeTransform {
-  transform(value: any): number {
+  transform(value: number): number {
     return Math.round(value);
   }
 }

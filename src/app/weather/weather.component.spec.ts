@@ -314,24 +314,6 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
   return evt;
 }
 
-/** Button events to pass to `DebugElement.triggerEventHandler` for RouterLink event handler */
-const ButtonClickEvents = {
-  left: { button: 0 },
-  right: { button: 2 }
-};
-
-/** Simulate element click. Defaults to mouse left-button click event. */
-function click(
-  el: DebugElement | HTMLElement,
-  eventObj: any = ButtonClickEvents.left
-): void {
-  if (el instanceof HTMLElement) {
-    el.click();
-  } else {
-    el.triggerEventHandler('click', eventObj);
-  }
-}
-
 function titleCase(word: string) {
   const result = word.replace(/\w\S*/g, (str) => {
     return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();

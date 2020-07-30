@@ -3,8 +3,10 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { WeatherService } from '../weather.service';
+import { Forecast, Weather } from '../weather-types';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-weather',
@@ -13,16 +15,28 @@ import * as recommendations from '../recommendations.json';
 })
 export class WeatherComponent implements OnInit {
   city = 'Eldoret';
-  error: any;
-  forecast: any[] = [];
+  error: HttpErrorResponse | null = null;
+  forecast: Forecast[] = [];
   forecastIcons = [];
   icon = '';
   icons = weatherIcons['default'];
-  validSearch: Boolean = false;
+  validSearch = false;
   prefix = 'wi wi-';
   recommendation = '';
   search = new FormControl();
-  weather: any;
+  weather: Weather = {
+    city: '',
+    country: '',
+    condition: 200,
+    date: 1596097124000,
+    description: '',
+    dt_txt: '',
+    humidity: 50,
+    icon_id: 500,
+    image: '',
+    temperature: 20.5,
+    wind_speed: 12
+  };
 
   constructor(private weatherService: WeatherService) {}
 
@@ -35,26 +49,35 @@ export class WeatherComponent implements OnInit {
 
   getWeather(city: string): void {
     this.weatherService.getCurrentWeather(city).subscribe(
-      (data) => {
-        this.weather = data;
+      (currentWeather) => {
+        this.weather = currentWeather;
         this.recommendation =
-          recommendations['default'][data.icon_id].recommendation;
-        this.icon = this.prefix + weatherIcons['default'][data.icon_id].icon;
+          recommendations['default'][currentWeather.icon_id].recommendation;
+        this.icon =
+          this.prefix + weatherIcons['default'][currentWeather.icon_id].icon;
       },
       (error) => {
+        console.log('error fetching weather: ', error);
         this.validSearch = true;
-        this.error = error.error ? error.error : error;
+        this.error =
+          error instanceof HttpErrorResponse
+            ? `${error.error.cod}: ${error.error.message}`
+            : error;
       }
     );
   }
 
   getForecast(city: string): void {
     this.weatherService.getFiveDayForecast(city).subscribe(
-      (data) => {
-        this.forecast = data;
+      (fiveDayForecast) => {
+        this.forecast = fiveDayForecast;
       },
       (error) => {
-        this.error = error.error ? error.error : error;
+        console.log('error fetching forecast: ', error);
+        this.error =
+          error instanceof HttpErrorResponse
+            ? `${error.error.cod}: ${error.error.message}`
+            : error;
       }
     );
   }
@@ -78,6 +101,6 @@ export class WeatherComponent implements OnInit {
   }
 
   private resetError() {
-    this.error = '';
+    this.error = null;
   }
 }
