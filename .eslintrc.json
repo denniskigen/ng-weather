@@ -11,10 +11,7 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": [
-    "jasmine",
-    "@typescript-eslint"
-  ],
+  "plugins": ["jasmine", "@typescript-eslint"],
   "rules": {},
   "overrides": [
     {
