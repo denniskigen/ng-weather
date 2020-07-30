@@ -10,7 +10,7 @@
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "npx eslint src/app --ext .js,.ts && ng lint",
     "e2e": "ng e2e",
-    "prettier": "prettier --write src/app"
+    "check": "prettier --check src/app ."
   },
   "private": true,
   "dependencies": {
