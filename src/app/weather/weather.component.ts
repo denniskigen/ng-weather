@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
-  styleUrls: ['./weather.component.css']
+  styleUrls: ['./weather.component.css'],
 })
 export class WeatherComponent implements OnInit {
   city = 'Eldoret';
@@ -35,7 +35,7 @@ export class WeatherComponent implements OnInit {
     icon_id: 500,
     image: '',
     temperature: 20.5,
-    wind_speed: 12
+    wind_speed: 12,
   };
 
   constructor(private weatherService: WeatherService) {}

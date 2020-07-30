@@ -21,7 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatListModule,
     MatSnackBarModule,
-    MatToolbarModule
+    MatToolbarModule,
   ],
   exports: [
     MatButtonModule,
@@ -33,7 +33,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatListModule,
     MatSnackBarModule,
-    MatToolbarModule
-  ]
+    MatToolbarModule,
+  ],
 })
 export class MaterialModule {}

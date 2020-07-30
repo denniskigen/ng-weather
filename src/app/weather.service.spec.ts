@@ -15,7 +15,7 @@ describe('WeatherService ', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
@@ -139,7 +139,7 @@ const mappedCurrentWeather: Weather = {
   wind_speed: 4,
   condition: 200,
   max: 22,
-  min: 13
+  min: 13,
 };
 
 const mappedFiveDayForecast: Forecast[] = [
@@ -154,7 +154,7 @@ const mappedFiveDayForecast: Forecast[] = [
     max: 21.53,
     min: 12.98,
     temperature: 21.53,
-    wind_speed: 10
+    wind_speed: 10,
   },
   {
     date: 1559811600000,
@@ -167,7 +167,7 @@ const mappedFiveDayForecast: Forecast[] = [
     max: 22.28,
     min: 13.44,
     temperature: 22.28,
-    wind_speed: 8
+    wind_speed: 8,
   },
   {
     date: 1559898000000,
@@ -180,7 +180,7 @@ const mappedFiveDayForecast: Forecast[] = [
     max: 22.65,
     min: 13.41,
     temperature: 22.65,
-    wind_speed: 7
+    wind_speed: 7,
   },
   {
     date: 1559984400000,
@@ -193,7 +193,7 @@ const mappedFiveDayForecast: Forecast[] = [
     max: 21.36,
     min: 12.88,
     temperature: 21.36,
-    wind_speed: 7
+    wind_speed: 7,
   },
   {
     date: 1560070800000,
@@ -206,12 +206,12 @@ const mappedFiveDayForecast: Forecast[] = [
     max: 21.27,
     min: 12.77,
     temperature: 21.27,
-    wind_speed: 6
-  }
+    wind_speed: 6,
+  },
 ];
 
 const mockErrorResponse = new HttpErrorResponse({
   error: 'Internal Server Error',
   status: 500,
-  statusText: 'An internal server error occurred'
+  statusText: 'An internal server error occurred',
 });

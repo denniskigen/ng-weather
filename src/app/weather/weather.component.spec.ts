@@ -11,7 +11,7 @@ import { WeatherService } from '../weather.service';
 import {
   searchWeatherResult,
   testCurrentWeather,
-  testFiveDayForecast
+  testFiveDayForecast,
 } from '../weather.mock';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
@@ -21,7 +21,7 @@ import { RoundTemperaturePipe } from '../round-temperature.pipe';
 
 const weatherServiceStub = {
   getCurrentWeather: () => of(testCurrentWeather),
-  getFiveDayForecast: () => of(testFiveDayForecast)
+  getFiveDayForecast: () => of(testFiveDayForecast),
 };
 
 const serverError = {
@@ -32,7 +32,7 @@ const serverError = {
   name: 'HttpErrorResponse',
   message:
     'Http failure response for (unknown url): 500 An internal server error occurred',
-  error: 'Internal Server Error'
+  error: 'Internal Server Error',
 };
 
 const notFoundError = {
@@ -45,7 +45,7 @@ const notFoundError = {
   // tslint:disable-next-line: max-line-length
   message:
     'Http failure response for https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeir&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3: 404 Not Found',
-  error: { cod: '404', message: 'city not found' }
+  error: { cod: '404', message: 'city not found' },
 };
 
 describe('WeatherComponent', () => {
@@ -64,10 +64,10 @@ describe('WeatherComponent', () => {
       providers: [
         {
           provide: WeatherService,
-          useValue: weatherServiceStub
-        }
+          useValue: weatherServiceStub,
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

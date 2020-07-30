@@ -10,11 +10,11 @@ import {
   Forecast,
   ForecastData,
   ForecastListItem,
-  Weather
+  Weather,
 } from './weather-types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WeatherService {
   forecast: Forecast[] = [];
@@ -80,7 +80,7 @@ export class WeatherService {
       max: data.main.temp_max,
       min: data.main.temp_min,
       temperature: data.main.temp,
-      wind_speed: Math.round(data.wind.speed * 3.6) // convert from m/s to km/h
+      wind_speed: Math.round(data.wind.speed * 3.6), // convert from m/s to km/h
     };
 
     // remove undefined fields
@@ -102,7 +102,7 @@ export class WeatherService {
       temperature: data.main.temp,
       description: data.weather[0].description,
       wind_speed: Math.round(data.wind.speed * 3.6), // convert from m/s to km/h
-      condition: data.cod
+      condition: data.cod,
     };
 
     // remove undefined fields
