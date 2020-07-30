@@ -5,7 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 import { WeatherComponent } from './weather/weather.component';
 
-import { CapitalizePipe } from './capitalize.pipe';
 import { RoundTemperaturePipe } from './round-temperature.pipe';
 
 describe('AppComponent', () => {
@@ -17,12 +16,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [
-        AppComponent,
-        WeatherComponent,
-        CapitalizePipe,
-        RoundTemperaturePipe,
-      ],
+      declarations: [AppComponent, WeatherComponent, RoundTemperaturePipe],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));

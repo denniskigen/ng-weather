@@ -24,19 +24,7 @@ export class WeatherComponent implements OnInit {
   prefix = 'wi wi-';
   recommendation = '';
   search = new FormControl();
-  weather: Weather = {
-    city: '',
-    country: '',
-    condition: 200,
-    date: 1596097124000,
-    description: '',
-    dt_txt: '',
-    humidity: 50,
-    icon_id: 500,
-    image: '',
-    temperature: 20.5,
-    wind_speed: 12,
-  };
+  weather: Weather | null = null;
 
   constructor(private weatherService: WeatherService) {}
 
@@ -57,7 +45,6 @@ export class WeatherComponent implements OnInit {
           this.prefix + weatherIcons['default'][currentWeather.icon_id].icon;
       },
       (error) => {
-        console.log('error fetching weather: ', error);
         this.validSearch = true;
         this.error =
           error instanceof HttpErrorResponse
@@ -73,7 +60,6 @@ export class WeatherComponent implements OnInit {
         this.forecast = fiveDayForecast;
       },
       (error) => {
-        console.log('error fetching forecast: ', error);
         this.error =
           error instanceof HttpErrorResponse
             ? `${error.error.cod}: ${error.error.message}`

@@ -52,9 +52,6 @@ describe('WeatherService ', () => {
         expect(data.image).toEqual(mappedCurrentWeather.image);
         expect(data.temperature).toEqual(mappedCurrentWeather.temperature);
         expect(data.wind_speed).toEqual(mappedCurrentWeather.wind_speed);
-        expect(data.icon).toEqual(mappedCurrentWeather.icon);
-        expect(data.min).toEqual(mappedCurrentWeather.min);
-        expect(data.max).toEqual(mappedCurrentWeather.max);
         expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
         done();
       },
@@ -131,15 +128,12 @@ const mappedCurrentWeather: Weather = {
   country: 'KE',
   date: 1559675580000,
   humidity: 88,
-  icon: '04n',
   icon_id: 803,
   image: 'https://openweathermap.org/img/w/04n.png',
   temperature: 17,
   description: 'broken clouds',
   wind_speed: 4,
   condition: 200,
-  max: 22,
-  min: 13,
 };
 
 const mappedFiveDayForecast: Forecast[] = [

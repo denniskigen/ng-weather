@@ -16,37 +16,28 @@ import {
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
 
-import { CapitalizePipe } from '../capitalize.pipe';
 import { RoundTemperaturePipe } from '../round-temperature.pipe';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const weatherServiceStub = {
   getCurrentWeather: () => of(testCurrentWeather),
   getFiveDayForecast: () => of(testFiveDayForecast),
 };
 
-const serverError = {
+const serverError = new HttpErrorResponse({
+  error: { cod: 500, message: 'Internal Server Error' },
   status: 500,
   statusText: 'An internal server error occurred',
-  url: null,
-  ok: false,
-  name: 'HttpErrorResponse',
-  message:
-    'Http failure response for (unknown url): 500 An internal server error occurred',
-  error: 'Internal Server Error',
-};
+  url: '',
+});
 
-const notFoundError = {
+const notFoundError = new HttpErrorResponse({
+  error: { cod: '404', message: 'city not found' },
   status: 404,
   statusText: 'Not Found',
   url:
     'https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeiro&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3',
-  ok: false,
-  name: 'HttpErrorResponse',
-  // tslint:disable-next-line: max-line-length
-  message:
-    'Http failure response for https://api.openweathermap.org/data/2.5/forecast/?q=ryo%20de%20janeir&units=metric&APPID=baedc2f2f31b7b3303e5d42d88d283c3: 404 Not Found',
-  error: { cod: '404', message: 'city not found' },
-};
+});
 
 describe('WeatherComponent', () => {
   let component: WeatherComponent;
@@ -60,7 +51,7 @@ describe('WeatherComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
-      declarations: [WeatherComponent, CapitalizePipe, RoundTemperaturePipe],
+      declarations: [WeatherComponent, RoundTemperaturePipe],
       providers: [
         {
           provide: WeatherService,
@@ -88,7 +79,7 @@ describe('WeatherComponent', () => {
   });
 
   it('should not have weather data immediately after the component is constructed', () => {
-    expect(component.weather).not.toBeDefined();
+    expect(component.weather).not.toBeTruthy();
     expect(component.forecast.length).not.toBeGreaterThan(0, 'No forecasts');
   });
 
@@ -152,19 +143,21 @@ describe('WeatherComponent', () => {
     expect(getWeatherSpy).toHaveBeenCalledTimes(1);
     expect(getWeatherSpy).toHaveBeenCalledWith(defaultCity);
     expect(component.weather).toBeDefined();
-    expect(component.weather.city).toEqual(defaultCity);
-    expect(component.weather.condition).toEqual(testCurrentWeather.condition);
-    expect(component.weather.country).toEqual(testCurrentWeather.country);
-    expect(component.weather.description).toEqual(
+    expect(component.weather?.city).toEqual(defaultCity);
+    expect(component.weather?.condition).toEqual(testCurrentWeather.condition);
+    expect(component.weather?.country).toEqual(testCurrentWeather.country);
+    expect(component.weather?.description).toEqual(
       testCurrentWeather.description
     );
-    expect(component.weather.humidity).toEqual(testCurrentWeather.humidity);
-    expect(component.weather.max).toEqual(testCurrentWeather.max);
-    expect(component.weather.min).toEqual(testCurrentWeather.min);
-    expect(component.weather.temperature).toEqual(
+    expect(component.weather?.humidity).toEqual(testCurrentWeather.humidity);
+    expect(component.weather?.max).toEqual(testCurrentWeather.max);
+    expect(component.weather?.min).toEqual(testCurrentWeather.min);
+    expect(component.weather?.temperature).toEqual(
       testCurrentWeather.temperature
     );
-    expect(component.weather.wind_speed).toEqual(testCurrentWeather.wind_speed);
+    expect(component.weather?.wind_speed).toEqual(
+      testCurrentWeather.wind_speed
+    );
     expect(component.recommendation).toMatch(
       /'Netflix and chill' weather. It's pleasant outside/
     );
@@ -227,7 +220,7 @@ describe('WeatherComponent', () => {
 
     expect(component.weather).toEqual(searchWeatherResult.weather);
     expect(component.forecast).toEqual(searchWeatherResult.forecast);
-    expect(component.error).toEqual('');
+    expect(component.error).toEqual(null);
     expect(searchInput.value).toEqual('Rio De Janeiro');
     expect(searchWeatherSpy).toHaveBeenCalledTimes(1);
     expect(cardTitle.innerHTML).toMatch(/Rio de Janeiro, BR/);
@@ -277,13 +270,9 @@ describe('WeatherComponent', () => {
     component.getWeather(defaultCity);
     component.getForecast(defaultCity);
     expect(component.error).toBeTruthy();
-    expect(component.error).toEqual(
-      jasmine.objectContaining({ cod: '404', message: 'city not found' })
-    );
-
     fixture.detectChanges();
     const err = <HTMLElement>nativeEl.querySelector('.err');
-    expect(err.textContent).toContain('City not found');
+    expect(err.textContent).toContain('404: city not found');
   });
 
   it('should throw an error when the current weather and forecast cannot be retrieved', () => {
@@ -299,11 +288,10 @@ describe('WeatherComponent', () => {
     component.getWeather(defaultCity);
     component.getForecast(defaultCity);
     expect(component.error).toBeTruthy();
-    expect(component.error).toEqual('Internal Server Error');
 
     fixture.detectChanges();
     const err = <HTMLElement>nativeEl.querySelector('.err');
-    expect(err.textContent).toContain('Internal Server Error');
+    expect(err.textContent).toContain('500: Internal Server Error');
   });
 });
 

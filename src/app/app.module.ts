@@ -11,15 +11,9 @@ import { AppComponent } from './app.component';
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherService } from './weather.service';
 import { RoundTemperaturePipe } from './round-temperature.pipe';
-import { CapitalizePipe } from './capitalize.pipe';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RoundTemperaturePipe,
-    WeatherComponent,
-    CapitalizePipe,
-  ],
+  declarations: [AppComponent, RoundTemperaturePipe, WeatherComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
