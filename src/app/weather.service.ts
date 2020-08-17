@@ -69,7 +69,7 @@ export class WeatherService {
   }
 
   private mapToForecast(data: ForecastListItem): Forecast {
-    const mapped: Forecast = {
+    const mappedForecast: Forecast = {
       date: data.dt * 1000,
       description: data.weather[0].description,
       dt_txt: data.dt_txt ? data.dt_txt : '',
@@ -83,16 +83,11 @@ export class WeatherService {
       wind_speed: Math.round(data.wind.speed * 3.6), // convert from m/s to km/h
     };
 
-    // remove undefined fields
-    Object.keys(mapped).forEach(
-      (key) => mapped[key] === undefined && delete mapped[key]
-    );
-
-    return mapped;
+    return mappedForecast;
   }
 
   private mapToWeather(data: CurrentWeatherData): Weather {
-    const mapped: Weather = {
+    const mappedWeather: Weather = {
       city: data.name,
       country: data.sys.country,
       date: data.dt * 1000,
@@ -105,11 +100,6 @@ export class WeatherService {
       condition: data.cod,
     };
 
-    // remove undefined fields
-    Object.keys(mapped).forEach(
-      (key) => mapped[key] === undefined && delete mapped[key]
-    );
-
-    return mapped;
+    return mappedWeather;
   }
 }
