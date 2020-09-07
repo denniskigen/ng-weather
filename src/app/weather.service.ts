@@ -51,7 +51,7 @@ export class WeatherService {
       );
   }
 
-  private handleError(error: Error | HttpErrorResponse) {
+  private handleError(error: Error | HttpErrorResponse): Observable<never> {
     if (error instanceof HttpErrorResponse) {
       // Server or connection error
       if (!navigator.onLine) {
