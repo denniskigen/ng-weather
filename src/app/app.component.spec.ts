@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { AppComponent } from './app.component';
@@ -13,13 +13,15 @@ describe('AppComponent', () => {
   let debugEl: DebugElement;
   let nativeEl: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [AppComponent, WeatherComponent, RoundTemperaturePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        declarations: [AppComponent, WeatherComponent, RoundTemperaturePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);

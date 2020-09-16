@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -48,19 +48,21 @@ describe('WeatherComponent', () => {
   const defaultCity = 'Eldoret';
   const locale = 'en-US';
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
-      declarations: [WeatherComponent, RoundTemperaturePipe],
-      providers: [
-        {
-          provide: WeatherService,
-          useValue: weatherServiceStub,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
+        declarations: [WeatherComponent, RoundTemperaturePipe],
+        providers: [
+          {
+            provide: WeatherService,
+            useValue: weatherServiceStub,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     service = TestBed.inject(WeatherService);
