@@ -38,7 +38,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
   recommendations: Recommendations = recommendations['default'];
   recommendation = '';
   search = new FormControl();
-  weather: Weather | undefined;
+  weather: Weather | null = null;
   subs: Subscription[] = [];
 
   constructor(private weatherService: WeatherService) {}
