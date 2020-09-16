@@ -4,7 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { WeatherService } from '../weather.service';
-import { Forecast, Weather } from '../types';
+import { Forecast, Weather, WeatherIconData, WeatherIconId } from '../types';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,16 +16,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class WeatherComponent implements OnInit, OnDestroy {
   city = 'Eldoret';
-  error: HttpErrorResponse | undefined = undefined;
+  error: HttpErrorResponse | undefined;
   forecast: Forecast[] = [];
-  forecastIcons = [];
   icon = '';
-  icons = weatherIcons['default'];
+  icons: Record<WeatherIconId, WeatherIconData> = weatherIcons['default'];
   validSearch = false;
   prefix = 'wi wi-';
   recommendation = '';
   search = new FormControl();
-  weather: Weather | undefined = undefined;
+  weather: Weather | undefined;
   subs: Subscription[] = [];
 
   constructor(private weatherService: WeatherService) {}
@@ -104,7 +103,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.subs.push(searchWeatherSub$);
   }
 
-  private resetError() {
+  private resetError(): void {
     this.error = undefined;
   }
 }

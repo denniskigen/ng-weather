@@ -112,3 +112,9 @@ export interface Forecast {
   wind_speed: number;
   [key: string]: string | number;
 }
+
+export type WeatherIconId = string;
+export interface WeatherIconData {
+  label: string;
+  icon: string;
+}
