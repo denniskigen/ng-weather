@@ -4,10 +4,23 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { WeatherService } from '../weather.service';
-import { Forecast, Weather, WeatherIconData, WeatherIconId } from '../types';
+import {
+  Forecast,
+  Weather,
+  WeatherIconData,
+  RecommendationData,
+} from '../types';
 import * as weatherIcons from '../icons.json';
 import * as recommendations from '../recommendations.json';
 import { HttpErrorResponse } from '@angular/common/http';
+
+interface WeatherIcons {
+  [key: string]: WeatherIconData;
+}
+
+interface Recommendations {
+  [key: string]: RecommendationData;
+}
 
 @Component({
   selector: 'app-weather',
@@ -19,9 +32,10 @@ export class WeatherComponent implements OnInit, OnDestroy {
   error: Error | string | null = null;
   forecast: Forecast[] = [];
   icon = '';
-  icons: Record<WeatherIconId, WeatherIconData> = weatherIcons['default'];
+  icons: WeatherIcons = weatherIcons['default'];
   validSearch = false;
   prefix = 'wi wi-';
+  recommendations: Recommendations = recommendations['default'];
   recommendation = '';
   search = new FormControl();
   weather: Weather | undefined;
@@ -48,10 +62,10 @@ export class WeatherComponent implements OnInit, OnDestroy {
       .subscribe(
         (currentWeather) => {
           this.weather = currentWeather;
-          this.recommendation =
-            recommendations['default'][currentWeather.icon_id].recommendation;
-          this.icon =
-            this.prefix + weatherIcons['default'][currentWeather.icon_id].icon;
+          this.recommendation = this.recommendations[
+            currentWeather.icon_id
+          ].recommendation;
+          this.icon = this.prefix + this.icons[currentWeather.icon_id].icon;
         },
         (error) => {
           this.validSearch = true;
