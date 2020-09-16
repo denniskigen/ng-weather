@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { WeatherService } from '../weather.service';
 import { Forecast, Weather } from '../types';
@@ -13,7 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css'],
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, OnDestroy {
   city = 'Eldoret';
   error: HttpErrorResponse | undefined = undefined;
   forecast: Forecast[] = [];
@@ -25,6 +26,7 @@ export class WeatherComponent implements OnInit {
   recommendation = '';
   search = new FormControl();
   weather: Weather | undefined = undefined;
+  subs: Subscription[] = [];
 
   constructor(private weatherService: WeatherService) {}
 
@@ -35,41 +37,55 @@ export class WeatherComponent implements OnInit {
     this.resetError();
   }
 
+  ngOnDestroy(): void {
+    if (this.subs.length) {
+      this.subs.map((sub) => sub.unsubscribe());
+    }
+  }
+
   getWeather(city: string): void {
-    this.weatherService.getCurrentWeather(city).subscribe(
-      (currentWeather) => {
-        this.weather = currentWeather;
-        this.recommendation =
-          recommendations['default'][currentWeather.icon_id].recommendation;
-        this.icon =
-          this.prefix + weatherIcons['default'][currentWeather.icon_id].icon;
-      },
-      (error) => {
-        this.validSearch = true;
-        this.error =
-          error instanceof HttpErrorResponse
-            ? `${error.error.cod}: ${error.error.message}`
-            : error;
-      }
-    );
+    const getCurrentWeatherSub$ = this.weatherService
+      .getCurrentWeather(city)
+      .subscribe(
+        (currentWeather) => {
+          this.weather = currentWeather;
+          this.recommendation =
+            recommendations['default'][currentWeather.icon_id].recommendation;
+          this.icon =
+            this.prefix + weatherIcons['default'][currentWeather.icon_id].icon;
+        },
+        (error) => {
+          this.validSearch = true;
+          this.error =
+            error instanceof HttpErrorResponse
+              ? `${error.error.cod}: ${error.error.message}`
+              : error;
+        }
+      );
+
+    this.subs.push(getCurrentWeatherSub$);
   }
 
   getForecast(city: string): void {
-    this.weatherService.getFiveDayForecast(city).subscribe(
-      (fiveDayForecast) => {
-        this.forecast = fiveDayForecast;
-      },
-      (error) => {
-        this.error =
-          error instanceof HttpErrorResponse
-            ? `${error.error.cod}: ${error.error.message}`
-            : error;
-      }
-    );
+    const getForecastSub$ = this.weatherService
+      .getFiveDayForecast(city)
+      .subscribe(
+        (fiveDayForecast) => {
+          this.forecast = fiveDayForecast;
+        },
+        (error) => {
+          this.error =
+            error instanceof HttpErrorResponse
+              ? `${error.error.cod}: ${error.error.message}`
+              : error;
+        }
+      );
+
+    this.subs.push(getForecastSub$);
   }
 
   searchWeather(): void {
-    this.search.valueChanges
+    const searchWeatherSub$ = this.search.valueChanges
       .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe(
         (searchValue: string) => {
@@ -84,6 +100,8 @@ export class WeatherComponent implements OnInit {
           console.error('Search Error: ', err);
         }
       );
+
+    this.subs.push(searchWeatherSub$);
   }
 
   private resetError() {
