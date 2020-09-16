@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class WeatherComponent implements OnInit, OnDestroy {
   city = 'Eldoret';
-  error: HttpErrorResponse | undefined;
+  error: Error | string | null = null;
   forecast: Forecast[] = [];
   icon = '';
   icons: Record<WeatherIconId, WeatherIconData> = weatherIcons['default'];
@@ -72,7 +72,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
         (fiveDayForecast) => {
           this.forecast = fiveDayForecast;
         },
-        (error) => {
+        (error: HttpErrorResponse | Error) => {
           this.error =
             error instanceof HttpErrorResponse
               ? `${error.error.cod}: ${error.error.message}`
@@ -104,6 +104,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
   }
 
   private resetError(): void {
-    this.error = undefined;
+    this.error = null;
   }
 }
