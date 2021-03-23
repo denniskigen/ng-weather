@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "test:ci": "env TZ='UTC' jest --coverage --config ./jest.config.js",
     "test": "jest --coverage --config ./jest.config.js",
     "test:watch": "jest -o --watch --config ./jest.config.js",
     "lint": "npx eslint src/app --ext .js,.ts && ng lint",
