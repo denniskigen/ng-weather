@@ -58,7 +58,7 @@ describe('WeatherComponent', () => {
       screen.getByRole('textbox', { name: /Enter city name/i })
     ).toBeInTheDocument();
     expect(screen.getByText(/Eldoret, KE/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tuesday, 10:13 PM/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tuesday, 7:13 PM/i)).toBeInTheDocument();
     expect(screen.getByText(/Broken Clouds/i)).toBeInTheDocument();
     expect(screen.getByText(/17°C/i)).toBeInTheDocument();
     expect(screen.getByText(/4 km\/h Winds/i)).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe('WeatherComponent', () => {
 
     await screen.findByText(/Rio De Janeiro, BR/i);
     expect(searchWeatherFn).toHaveBeenCalledTimes(1);
-    expect(screen.getByText(/Saturday, 12:09 PM/i)).toBeInTheDocument();
+    expect(screen.getByText(/Saturday, 9:09 AM/i)).toBeInTheDocument();
     expect(screen.getByText(/Few Clouds/i)).toBeInTheDocument();
     expect(screen.getByText(/18°C/i)).toBeInTheDocument();
     expect(screen.getByText(/13 km\/h Winds/i)).toBeInTheDocument();
