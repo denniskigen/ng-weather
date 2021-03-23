@@ -5,9 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "coverage": "ng test --codeCoverage=true",
-    "test": "ng test",
-    "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
+    "test": "jest --coverage --config ./jest.config.js",
+    "test:watch": "jest -o --watch --config ./jest.config.js",
     "lint": "npx eslint src/app --ext .js,.ts && ng lint",
     "e2e": "ng e2e",
     "check": "prettier --check src/app ."
@@ -24,7 +23,9 @@
     "@angular/platform-browser": "^11.0.4",
     "@angular/platform-browser-dynamic": "^11.0.4",
     "@angular/router": "^11.0.4",
+    "@briebug/jest-schematic": "^3.1.0",
     "@mdi/font": "^2.8.94",
+    "@types/testing-library__jest-dom": "^5.9.5",
     "core-js": "^2.6.11",
     "eslint-plugin-jasmine": "^4.1.1",
     "lodash": "^4.17.20",
@@ -35,13 +36,18 @@
     "zone.js": "^0.10.3"
   },
   "devDependencies": {
+    "@angular-builders/jest": "^11.1.1",
     "@angular-devkit/build-angular": "^0.1100.4",
     "@angular/cli": "^11.0.4",
     "@angular/compiler": "^11.0.4",
     "@angular/compiler-cli": "^11.0.4",
     "@angular/language-service": "^11.0.4",
+    "@testing-library/angular": "^10.4.1",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/user-event": "^13.0.7",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.8",
+    "@types/jest": "^26.0.21",
     "@types/node": "^12.12.59",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
@@ -51,11 +57,8 @@
     "husky": "^4.3.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~5.1.1",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
-    "karma-jasmine": "~4.0.0",
-    "karma-jasmine-html-reporter": "^1.5.0",
+    "jest": "^26.6.3",
+    "jest-preset-angular": "^8.4.0",
     "lint-staged": "^10.3.0",
     "prettier": "2.0.5",
     "protractor": "^7.0.0",
@@ -67,7 +70,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run test-headless"
+      "pre-commit": "lint-staged && npm run test"
     }
   },
   "lint-staged": {

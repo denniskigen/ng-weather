@@ -33,9 +33,9 @@ export class WeatherComponent implements OnInit, OnDestroy {
   forecast: Forecast[] = [];
   icon = '';
   icons: WeatherIcons = weatherIcons['default'];
+  recommendations: Recommendations = recommendations['default'];
   validSearch = false;
   prefix = 'wi wi-';
-  recommendations: Recommendations = recommendations['default'];
   recommendation = '';
   search = new FormControl();
   weather: Weather | null = null;
@@ -47,7 +47,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
     this.getWeather(this.city);
     this.getForecast(this.city);
     this.searchWeather();
-    this.resetError();
   }
 
   ngOnDestroy(): void {

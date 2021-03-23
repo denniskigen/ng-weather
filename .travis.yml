@@ -16,7 +16,7 @@ before_install:
 script:
   - npm run check
   - ng lint
-  - ng test --watch=false --code-coverage=true --browsers=ChromeHeadless
+  - npm run test
   - ng build --prod
 
 after_script:

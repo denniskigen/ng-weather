@@ -12,8 +12,8 @@
           [formControl]="search"
         />
       </mat-form-field>
-      <div class="err">
-        <mat-error *ngIf="error">{{ error }}</mat-error>
+      <div class="err" *ngIf="error">
+        <mat-error>{{ error }}</mat-error>
       </div>
     </form>
   </div>
@@ -58,6 +58,7 @@
             <mat-divider inset="true"></mat-divider>
             <mat-list>
               <mat-list-item
+                role="listitem"
                 class="forecast"
                 *ngFor="let f of forecast; index as i"
               >
