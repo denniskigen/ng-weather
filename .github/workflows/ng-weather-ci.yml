@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: zcong1993/setup-timezone@master
       - name: Setup timezone
+        uses: zcong1993/setup-timezone@master
         with:
           timezone: Africa/Nairobi
 
