@@ -6,6 +6,15 @@ on:
     branches: [master]
 
 jobs:
+  set-timezone:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup timezone
+    uses: zcong1993/setup-timezone@master
+    with:
+      timezone: Africa/Nairobi
+
   build:
     runs-on: ubuntu-latest
 
