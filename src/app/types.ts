@@ -1,4 +1,5 @@
 export interface Weather {
+  [key: string]: string | number;
   city: string;
   condition: number;
   country: string;
@@ -9,7 +10,6 @@ export interface Weather {
   image: string;
   temperature: number;
   wind_speed: number;
-  [key: string]: string | number;
 }
 
 export interface CurrentWeatherData {
@@ -99,6 +99,7 @@ export interface WeatherData {
 }
 
 export interface Forecast {
+  [key: string]: string | number;
   date: number;
   description: string;
   dt_txt: string;
@@ -110,8 +111,8 @@ export interface Forecast {
   min: number;
   temperature: number;
   wind_speed: number;
-  [key: string]: string | number;
 }
+
 export interface WeatherIconData {
   label: string;
   icon: string;

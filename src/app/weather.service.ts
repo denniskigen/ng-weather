@@ -42,7 +42,7 @@ export class WeatherService {
           this.forecast = [];
           for (let i = 0; i < data.list.length; i += 8) {
             this.forecast.push(
-              this.mapToForecast(<ForecastListItem>data.list[i + 4])
+              this.mapToForecast(data.list[i + 4] as ForecastListItem)
             );
           }
           return this.forecast;

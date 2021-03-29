@@ -43,12 +43,8 @@ describe('WeatherComponent', () => {
         {
           provide: WeatherService,
           useValue: {
-            getCurrentWeather() {
-              return of(testCurrentWeather);
-            },
-            getFiveDayForecast() {
-              return of(testFiveDayForecast);
-            },
+            getCurrentWeather: () => of(testCurrentWeather),
+            getFiveDayForecast: () => of(testFiveDayForecast),
           },
         },
       ],
@@ -83,12 +79,8 @@ describe('WeatherComponent', () => {
         {
           provide: WeatherService,
           useValue: {
-            getCurrentWeather() {
-              return of(searchWeatherResult.weather);
-            },
-            getFiveDayForecast() {
-              return of(searchWeatherResult.forecast);
-            },
+            getCurrentWeather: () => of(searchWeatherResult.weather),
+            getFiveDayForecast: () => of(searchWeatherResult.forecast),
           },
         },
       ],
@@ -124,12 +116,8 @@ describe('WeatherComponent', () => {
         {
           provide: WeatherService,
           useValue: {
-            getCurrentWeather() {
-              return throwError(notFoundError);
-            },
-            getFiveDayForecast() {
-              return throwError(notFoundError);
-            },
+            getCurrentWeather: () => throwError(notFoundError),
+            getFiveDayForecast: () => throwError(notFoundError),
           },
         },
       ],
@@ -147,12 +135,8 @@ describe('WeatherComponent', () => {
         {
           provide: WeatherService,
           useValue: {
-            getCurrentWeather() {
-              return throwError(serverError);
-            },
-            getFiveDayForecast() {
-              return throwError(serverError);
-            },
+            getCurrentWeather: () => throwError(serverError),
+            getFiveDayForecast: () => throwError(serverError),
           },
         },
       ],
