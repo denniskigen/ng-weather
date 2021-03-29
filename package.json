@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test:ci": "env TZ='UTC' jest --coverage --config ./jest.config.js",
     "test": "env TZ='UTC' jest --coverage --config ./jest.config.js",
     "test:watch": "env TZ='UTC' jest -o --watch --config ./jest.config.js",
     "lint": "npx eslint src/app --ext .js,.ts && ng lint",
@@ -71,7 +70,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run test"
+      "pre-commit": "lint-staged && npm run lint && npm run check && npm run test"
     }
   },
   "lint-staged": {

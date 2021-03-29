@@ -1,9 +1,9 @@
 name: ng-weather-ci
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
         run: npm run check
 
       - name: 🧪 Test
-        run: npm run test:ci
+        run: npm run test
 
       - name: 👷‍♀️ Build
         run: npm run build -- --prod
