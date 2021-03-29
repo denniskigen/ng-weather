@@ -9,19 +9,43 @@ jobs:
   build:
     name: 'Build'
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: 💾 Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: ⎔ Setup node
         uses: actions/setup-node@v1
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm run check
-      - run: npm run lint
-      - run: npm run test:ci
-      - run: npm run build -- --prod
-      - name: Upload Artifacts
+
+      - name: 📀 Install dependencies
+        run: npm install
+
+      - name: 🧹 Lint
+        run: npm run lint
+
+      - name: 😍 Prettier check
+        run: npm run check
+
+      - name: 🧪 Test
+        run: npm run test:ci
+
+      - name: 👷‍♀️ Build
+        run: npm run build -- --prod
+
+      - name: ⏫ Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist
@@ -33,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download build artifacts from build job
+      - name: ⏬ Download artifacts from build job
         uses: actions/download-artifact@v2
         with:
           name: dist
@@ -47,6 +71,7 @@ jobs:
           secrets: '["DEV_NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
 
   codecov:
+    name: 'Upload coverage report'
     runs-on: ubuntu-latest
     needs: deploy
     steps:
